@@ -1,0 +1,35 @@
+TITLE:常見問題-域名到期前會通知嗎?
+
+常見問題-域名到期前會通知嗎?
+域名到期前會通知嗎?
+一、域名到期前會通知嗎?
+1. 在域名到期前90、60、45、30、14、7
+                      天，系統會自動寄發到期通知信到【會員帳號主信箱】
+2.
+                      域名到期前14、7天，系統會另外同時發信到【域名註冊人信箱】及【會員備用信箱】
+3.
+                      域名到期前數天，客服人員會電話通知您的會員聯繫電話提醒您，若電話不通或無人接聽，則會改以信件聯繫您的【會員帳號主信箱】
+4.
+                      若您的域名逾期未續用，【會員帳號主信箱】及【域名註冊人信箱】皆會收到域名逾期通知信
+5.
+                      若您沒收到信有可能是掉到垃圾信箱，請先確認。為防此狀況再度發生損傷您的權益，建議將網路中文通知信箱(
+notice@system.net-chinese.com.tw (https://www.net-chinese.com.tw/mailto:notice@system.net-chinese.com.tw)
+)設為白名單
+6.
+                      部分國家及地區頂級域名域名續用的規則較特殊，需在到期日前數日完成續用，可參考【
+域名百科 (https://www.net-chinese.com.tw/services/domainname)
+】查詢
+※注意事項
+*為確保您能確實收到域名的到期通知，請定期更新您的聯絡資料。
+*會員的連絡電話及備用信箱請自行登入帳戶修改。請參考「
+如何修改會員基本資料? (https://www.net-chinese.com.tw/faq/membership/account/ModifyAccountInfo)
+」
+*如想確認您的會員【帳號主信箱】，請至帳戶管理中的帳戶總覽確認。
+*若想修改請參考「
+如何修改會員帳號主信箱? (https://www.net-chinese.com.tw/faq/membership/account/UpdateAccountEmail)
+」。
+*如想確認您的「域名註冊人信箱」，請至域名總覽中點選該域名，彈出視窗左側的域名基本資料中查看 。
+*若想修改請參考「
+如何修改域名註冊人信箱? (https://www.net-chinese.com.tw/faq/domain/updateinfo/ModifyDomainEmail)
+」。
+*有任何問題歡迎來電詢問 02-2531-9696

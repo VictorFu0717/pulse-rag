@@ -1,0 +1,100 @@
+TITLE:常見問題-SPF/DKIM/DMARC紀錄設定
+
+常見問題-SPF/DKIM/DMARC紀錄設定
+SPF/DKIM/DMARC紀錄設定
+一、電子郵件驗證設定
+電子郵件是網路世界中重要的溝通媒介，任何一個人都可以透過電子郵件發送消息，該如何在寄件時充分表明自己可信的身分，並確保信件的正確性和完整性？電子郵件的紀錄設定在其中佔據了重要的地位。
+而在網路中，網域名稱即代表著我們的身分，為防範有心人士假冒名義，濫發垃圾郵件或詐騙消息，損及個人或公司名譽，針對以域名為基礎的紀錄設定，接下來將介紹三種常見的驗證標準。
+二、SPF 基本介紹
+SPF 中文名稱為「
+寄件者
+政策架構」，此種設定對外宣告電子郵件寄出的來源是經過授權的，而對方收件伺服器可以在收到類似來源的郵件時，依照
+                      SPF
+                      紀錄回頭驗證郵件來源，是否確實從特定網域的擁有者允許的伺服器送出。
+簡單來說，就是信件來源的證明紀錄，證明郵件的確是由網域擁有者授權發出，不是由來路不明的來源寄送的。
+設定
+SPF 屬於 DNS 紀錄中的
+TXT 類型 (https://www.net-chinese.com.tw/faq/tech/DNS/TXTRecord)
+。
+參數以網路中文雲端主機提供的數值為例：
+紀錄類型
+主機名稱
+IP/域名（設定值）
+TXT
+“v=spf1 +a:mx01.site.taipei -all”
+三、DKIM 基本介紹
+DKIM 中文名稱為「網域金鑰認證郵件」，此種設定確保郵件在
+傳輸過程
+中的完整性，運作原理和 SSL
+                      的加密過程相似，會有一組「公鑰」和「私鑰」，而公鑰即是我們設定的
+                      DKIM 值。
+設定
+SPF 屬於 DNS 紀錄中的
+TXT 類型 (https://www.net-chinese.com.tw/faq/tech/DNS/TXTRecord)
+。
+參數以網路中文雲端服務提供的數值為例：
+紀錄類型
+主機名稱
+IP/域名（設定值）
+TXT
+default._domainkey.域名
+“
+p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtY8mk3CjC8uMeDncZxThxGuou8vaHp/Cjrso2Gw23r5zici4w73TeisdRtZVlNckdFNb3GeuD+y0wNuQtwk
+””
+VhabwZk7QPrN2UmwdaMmpAFcnBTALDX0RfFho95a2v7FEid+x/YpR3W5x7SW/WZKu502AKt2I5GHildmcZLXHyfGraT4I/yzt7nhba1u
+””
+GjNHWhEawDYGCf66F1U9+oG5+LRfqinvtSqZV6PnU8HkVlDYISvKAWUmeopUABiewHRc456jiejjiowEY5gQo1YhEJ6ubXkDpfLBidONZlRZPxpe
+””
+7L6N9zdpDjyg+o7yCme6xT2+FI86pzxn33wLyEBwtRkQIDAQAB
+※ 網路中文設定 TXT 字串有長度限制，若字元長度超過 250
+                        個，須於其中添加「
+””
+」（兩個半形雙引號），如上圖所示。
+※
+                        購買網路中文雲端服務，此筆「default._domainkey.域名」對應的參數值，須至
+Plesk 管理後台 (https://login.site.taipei:8443/smb/web/view)
+查看。
+四、DMARC 基本介紹
+DMARC
+                      的中文名稱為「網域型郵件驗證、報告與一致性」，負責制定收件者收到未通過
+                      SPF 或 DKIM 驗證的信件時，最終的處置方式。
+設定
+DMARC 同樣屬於
+TXT 類型 (https://www.net-chinese.com.tw/faq/tech/DNS/TXTRecord)
+。
+參數以網路中文雲端主機提供的數值為例：
+紀錄類型
+主機名稱
+IP/域名（設定值）
+TXT
+_dmarc.域名
+“v=DMARC1; p=none ”
+根據設定值的不同，可分為
+三種
+可能針對郵件的處置方式：
+1.
+                        p=none：不對郵件採取任何處置，讓郵件正常傳送給收件者。
+2.
+                        p=quarantine：將未通過驗證的郵件，標示為垃圾郵件，傳送到收件者的信箱垃圾桶或隔離區。
+3. p=reject：直接拒絕未通過驗證的郵件，不傳送給收件者。
+五、檢查紀錄設定的方式
+設定完成後，可能還是會遇到驗證的問題，以下提供初步檢查流程供使用者參考。
+需要注意的是，每間信箱廠商對設定的條件會有所不同，所以此流程只能提供粗略的檢測，並不能保證調整設定後就一定會通過驗證，確切的原因建議使用者直接向信箱廠商洽詢，會是最準確的。
+1、確認 DNS 解析狀況
+第一步，先使用 DNS Lookup
+                      解析工具，確認紀錄是否能成功被解析到，以 google.com
+                      為成功解析的例子：
+參數以網路中文雲端主機提供的數值為例：
+※ 以上查詢畫面為 Windows
+                        電腦內建的「命令提示字元」工具，開啟方式為 Windows + R
+                        鍵，在對話方塊中輸入 CMD，按一下「確定」即可。使用 Mac
+                        則可透過相似功能的「終端機」App
+                        查詢。線上查詢工具則可以參考：
+whatsmydns.net (https://www.net-chinese.com.tw/whatsmydns.net)
+2、測試設定結果
+第二步，使用 DMARC Lookup
+                      測試工具，確認紀錄是否需要部份修改，線上有許多檢驗工具，若有任何疑問，歡迎來或來電詢問。
+六、相關文章
+針對電子郵件相關的紀錄設定，您可以參考：
+什麼是 TXT 紀錄？ (https://www.net-chinese.com.tw/faq/tech/DNS/TXTRecord)
+怎麼設定負責收信的郵件主機？ (https://www.net-chinese.com.tw/faq/tech/DNS/MXRecord)

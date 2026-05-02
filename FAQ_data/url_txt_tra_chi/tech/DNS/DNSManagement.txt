@@ -1,0 +1,84 @@
+TITLE:常見問題-DNS 主機設定
+
+常見問題-DNS 主機設定
+DNS 主機設定
+一、DNS 主機設定
+DNS
+                      主機的設定，可以根據域名使用需求做選擇和設定，以下提供網路中文
+                      DNS 自管和代管操作路徑，給您做參考。
+二、自管主機
+自管 DNS 主機，其主機名稱和對應 IP 位址將由 DNS
+                      主機廠商提供，不可於網路中文管理紀錄內容。
+若為自管主機，請於網路中文會員帳號中，輸入至少兩組主機名稱和
+                      IP 位址，以下路徑以域名「abc.com」為例：
+總路徑：「域名管理」→「abc.com」→「DNS」→「DNS主機設定」→「DNS自管」
+序號
+主機名稱
+IP 位址
+1st
+廠商提供/自定義名稱
+對應 IP
+2nd
+廠商提供/自定義名稱
+對應 IP
+三、網中代管
+於網路中文購買域名，附贈免費的 DNS
+                      代管服務，您可於會員帳號新增紀錄設定，路徑如下（同樣以『abc.com』為例）：
+總路徑：
+「域名總覽」→「abc.com」→「DNS」→「DNS 主機設定」→「DNS
+                      紀錄設定」→ 勾選「DNS 代管：使用網路中文 DNS 主機」
+設為代管後，會自動帶入網路中文對應的處理主機，不必另外輸入，以下為例子。
+序號
+主機名稱
+IP 位址
+1st
+ens1.net-chinese.com.tw
+202.153.205.73
+2nd
+ens2.net-chinese.com.tw
+220.130.187.243
+目前設定為：網中代管
+※主機會依域名後綴不同而跟著改變，例：cns1、cns2用來解析TW域名；ens1、ens2則用來解析TW以外域名。
+圖為簡易範例，若想知道詳細紀錄設定規則，可以點選下拉選單中對應連結。
+● 紀錄類型清單：
+1.
+A 紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/ARecord)
+2. AAAA 紀錄
+3.
+CNAME 紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/CNAMERecord)
+4.
+MX 紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/MXRecord)
+5.
+TXT 紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/TXTRecord)
+6.
+SRV 紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/SRVRecord)
+7. NS 紀錄
+序號
+記錄類型
+主機名稱/別名
+IP/域名
+優先權
+1st
+A
+.abc.com
+2nd
+MX
+.abc.com
+mail.site.taipei
+10
+3rd
+TXT
+_dmarc
+.abc.com
+"v=DMARC1; p=none”
+※注意事項
+1. 代管紀錄至多設
+50 組
+。
+2. 代管紀錄與轉址紀錄之「主機名稱/別名」
+不可重複
+。
+3. 「主機名稱/別名」欄位，
+不用重複輸入域名
+，系統會自動帶入。
+※新增或更動 DNS 紀錄設定，都須等 12-24 小時更新。

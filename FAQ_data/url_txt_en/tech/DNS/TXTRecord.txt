@@ -1,0 +1,24 @@
+TITLE:FAQ-TXT record
+
+FAQ-TXT record
+TXT record
+How to set TXT record ?
+TXT record can provide text information to sources outside
+                      your domain.
+For example : "v=spf1 include:spf.messaging.microsoft.com
+                      ip4:192.168.254.254 -all"
+Your email address will be @net-chinese.com after you set
+                      a blank A record.
+If TXT record is more than 250 characters, please add two
+""
+to divide it.
+For example :
+"
+v=spf1 include:spf.messaging.
+""
+microsoft.com ip4:192.168.254.254 -al
+"
+Notice :
+You can set 50 DNS records for free.
+If there is any mistake, it would make your record
+                      invaild.

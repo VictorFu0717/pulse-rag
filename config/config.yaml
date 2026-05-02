@@ -1,0 +1,95 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Pluse RAG  —  config/config.yaml
+#  Edit this file to customise the system for your company.
+# ─────────────────────────────────────────────────────────────────────────────
+
+app:
+  name: "Net-Chinese AI Customer Service"
+  host: "0.0.0.0"
+  port: 8002
+  cors_origins: ["*"]
+
+# ── LLM ──────────────────────────────────────────────────────────────────────
+# provider: ollama | openai | custom
+llm:
+  provider: "ollama"
+  model: "qwen3.5:latest"
+  base_url: "http://localhost:11434"
+  temperature: 0
+
+# Switch to OpenAI:
+# llm:
+#   provider: "openai"
+#   model: "gpt-4o-mini"
+
+# Switch to any OpenAI-compatible endpoint:
+# llm:
+#   provider: "custom"
+#   model: "my-model"
+#   base_url: "http://localhost:8317/v1"
+#   api_key: "your-key"
+
+# ── Embeddings ────────────────────────────────────────────────────────────────
+embeddings:
+  model: "BAAI/bge-m3"
+  device: "auto"          # auto | cpu | cuda
+
+# ── Retrieval ─────────────────────────────────────────────────────────────────
+retrieval:
+  faiss_k: 8              # candidates from FAISS before reranking
+  rerank_top_k: 3         # kept after reranking
+
+# ── Reranker ──────────────────────────────────────────────────────────────────
+reranker:
+  model: "BAAI/bge-reranker-v2-minicpm-layerwise"
+  cutoff_layers: [28]     # lower = faster, slightly less accurate (range 8–40)
+  use_fp16: true
+  batch_size: 16
+
+# ── Knowledge Bases ───────────────────────────────────────────────────────────
+# Each entry becomes one retrieval tool available to the agent.
+# Add, remove, or rename entries to match your data.
+knowledge_bases:
+  - name: "traditional_chinese"
+    index_path: "faiss_index_tra_chi"
+    tool_name: "retrieve_tra_chi"
+    tool_description: >
+      若客戶使用繁體中文且詢問跟公司提供的服務相關問題使用此工具檢索資料庫回應客戶，
+      包括但不限於：域名申請與續用/資料修改/轉移與讓渡/加值服務/帳號管理/
+      訂單管理/DNS設置/SSL憑證/雲端服務等等
+    fallback_group: "else"   # docs in this group are always appended to results
+    fallback_k: 1
+
+  - name: "simplified_chinese"
+    index_path: "faiss_index_sim_chi"
+    tool_name: "retrieve_sim_chi"
+    tool_description: >
+      若客戶使用簡體中文且詢問跟公司提供的服務相關問題使用此工具檢索資料庫回應客戶，
+      包括但不限於：域名申請與續用/資料修改/轉移與讓渡/加值服務/帳號管理/
+      訂單管理/DNS設置/SSL憑證/雲端服務等等
+
+  - name: "english"
+    index_path: "faiss_index_en"
+    tool_name: "retrieve_en"
+    tool_description: >
+      Use this tool when the customer communicates in English to retrieve
+      information about services including domain registration, transfer,
+      DNS management, SSL certificates, cloud hosting, and more.
+
+# ── Plugins ───────────────────────────────────────────────────────────────────
+tools:
+  web_search_enabled: true      # requires TAVILY_API_KEY in .env
+  domain_checker_enabled: true  # requires WHOISJSON_API_KEY (falls back to local whois)
+
+# ── Memory ────────────────────────────────────────────────────────────────────
+memory:
+  max_messages: 10    # sliding window; trims oldest messages first
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"
+  dir: "logs"
+  retention_days: 7
+
+# ── System Prompt ─────────────────────────────────────────────────────────────
+system_prompt_path: "config/system_prompt.txt"

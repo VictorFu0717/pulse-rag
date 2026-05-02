@@ -1,0 +1,71 @@
+TITLE:FAQ-How to register a domain name？
+
+FAQ-How to register a domain name？
+How to register a domain name？
+Please refer to the following steps to register a domain
+                    name.
+1. Please log in to your account.
+*How to create Net-Chinese account？ (https://www.net-chinese.com.tw/en/faq/membership/account/CreateAccount)
+*How to modify account info ? (https://www.net-chinese.com.tw/en/faq/membership/account/CreateAccount)
+2. Search the domain name which you want to register on
+                      the
+Net-Chinese website home page. (https://www.net-chinese.com.tw/)
+3. Click "Add to Cart" if the domain name is available and
+                      click "Check out".
+If it shows "Still Want", it means the domain name has
+                      been registered. You can refer to "
+Buy Back Service (https://www.net-chinese.com.tw/en/services/brand/DomainBuyBack)
+" if you still want to buy this domain name.
+4. Choose the domain name registration term and click
+                      "Next".
+5. Click "Choose Value-Added Service" and tick the service
+                      which you need and click "Next".
+(Click "Next" directly if you don't need any Value-Added
+                      Service)
+*
+CDN Service (https://www.net-chinese.com.tw/services/domain/CDN)
+*
+Redirect (https://www.net-chinese.com.tw/en/services/domain/URLRedirection)
+*
+WHOIS Privacy (https://www.net-chinese.com.tw/en/services/domain//WHOISPrivacy)
+*
+Domain Lock (https://www.net-chinese.com.tw/en/services/domain/DomainNameLock)
+6. Click User's Agreement and Click "Agree"
+*If you choose to use a credit card, you can pay by
+                      VISA、Master Card、JCB. Just to remind you that
+                      transaction fee and exchange rate fee are extra
+                      calculated.
+7. Confirm shopping list and click "Check Out"
+8. Select a payment method and click "Check Out".
+*
+How to deposit prepayment to Account (https://www.net-chinese.com.tw/en/faq/order/payment/Prepayment)
+*If you choose to use a credit card, you can pay by
+                      VISA、Master Card、JCB. Just to remind you that
+                      transaction fee and exchange rate fee are extra
+                      calculated.
+9. You will be directed to the "Services to be opened"
+                      page. Please click "Choose Contacts for Domains".
+10. Choose or create your domain name contact information
+                      and click "Submit domain name contact information".
+There are three ways for creating.
+Click "Add" and create a new domain name contact
+                      information > Click "Create"
+If you have created the contact before,you can choose a
+                      domain name contact information that you need to use
+                      directly. You can click “查看” to check the contact
+                      information also.
+Fill in the CTID directly and click "ok".
+After checking your information, please click "Submit
+                      domain name contact information".
+Notice
+1.CTID is a data code for each domain name information. If
+                      you modify it, the other domain names using the same CTID
+                      will be modified.
+2.If you are still not a member of Net-Chinese, please
+                      click "
+Sign up (https://www.net-chinese.com.tw/nc/index.php/MemRegisterEdit/Index)
+" on the top right.
+3.Please send an e-mail to us for checking if you have a
+                      domain registration identity.
+4.Please check the domain name contact information is
+                      correct.

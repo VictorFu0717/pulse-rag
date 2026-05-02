@@ -1,0 +1,17 @@
+TITLE:FAQ-Payment methods
+
+FAQ-Payment methods
+Payment methods
+PayPal
+*Paypal will charge approximately 7% transaction Fee
+Credit Card
+You can pay by VISA、Master Card、JCB
+* Transaction fee and exchange rate fee are extra
+                      calculated according to the policy of bank.
+Prepayment
+You can use your account prepayment.
+If you need to check it, please click "Account". The
+                      balance is showed on "Account Overview".
+If you want to know how to replenish your account
+                      prepayment, please click the link below,
+*How to deposit prepayment？ (https://www.net-chinese.com.tw/en/faq/order/payment/Prepayment)

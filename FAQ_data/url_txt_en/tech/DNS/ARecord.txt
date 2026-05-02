@@ -1,0 +1,31 @@
+TITLE:FAQ-A record
+
+FAQ-A record
+A record
+How to set A record?
+If you build a website（WEB SERVER）and IP address is
+                      232.61.23.15, you can register a domain name and direct it
+                      to your IP address.
+►If you need to set www.netc.tw, please enter www in
+                      "Hostname/cname"
+►If you need to set netc.tw, please do not enter any word
+                      in "Hostname/cname"
+►If you need to set both www.netc.tw and netc.tw, please
+                      set two A records.
+►For example :
+mail.netc.tw
+dns.netc.tw
+Notice :
+If you need to set sub domain without IP address, please
+                      refer "Cname record"
+AAAA record can direct to IPv6 address. You can set AAAA
+                      record at the same way.
+You can set 50 DNS records for free.
+Please enter English lowercase.
+Do not enter the same hostname/cname for two different
+                      records.
+Do not enter special symbol in hostname/cname except "-".
+Do not enter domain name in hostname/cname.
+You can only set one layer for Hostname/cname.
+If there is any mistake, it would make your record
+                      invaild.

@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+
+# Environment — never commit secrets
+.env
+
+# Logs
+logs/
+
+# Large data files not used by the app
+templates.json
+templates_merged.json
+template_usage.json
+
+# FAISS indices (regenerate with: python scripts/build_index.py)
+# Uncomment if you prefer not to commit pre-built indices (~200 MB each)
+# faiss_index_*/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

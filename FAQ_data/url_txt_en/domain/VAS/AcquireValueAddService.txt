@@ -1,0 +1,41 @@
+TITLE:FAQ-How to acquire value-added services
+
+FAQ-How to acquire value-added services
+How to acquire value-added services
+How to acquire value-added services
+1. Please log in your account.
+2. Click your account on the top right and choose "Domain
+                      Management".
+3. Choose domain name > Click "Acquire Matching Domain
+                      Name" > Choose Added-Value Service.
+4. Click "Check Out".
+5. Choose "Term" and Click "Next".
+6. Click "User's Agreement" and Click "Agree"
+7. Confirm shopping list and Click "Check out"
+8. Select a payment method and Click "Check Out"
+9. You will be directed to "Service to be opened" page.
+                      Please click "Click to modify".
+Please refer to the following instructions to enable
+                      Value-added services.
+*
+How to enable redirect service (https://www.net-chinese.com.tw/en/faq/domain/VAS/RedirectInstruction/)
+*
+How to enable WHOIS privacy (https://www.net-chinese.com.tw/en/faq/domain/VAS/ActiveWhoisPrivacy/)
+*
+How to enable CDN accelerate (https://www.net-chinese.com.tw/faq/tech/cloud/ActiveCDN/)
+*
+How to enable Domain lock (https://www.net-chinese.com.tw/en/faq/domain/VAS/EnableDomainNameLock/)
+Notice:
+*If you have purchased the service, you will see the "red
+                      pause button" in "domain manegement" page, you can
+                      enable/disable the service by clicking it.
+*If you have not acquired the service, you can buy it by
+                      clicking "blue shopping cart button" in "domain
+                      manegement" page.
+*You can also buy/renew add-valued services in the step2
+                      when you register/renew domain name.
+*According to the policy of domain name, add-valued
+                      services can not apply to some domain names.
+*If you have any question, please mail to "
+service@net-chinese.com (https://www.net-chinese.com.tw/mailto:service@net-chinese.com)
+".

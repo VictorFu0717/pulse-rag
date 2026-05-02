@@ -1,0 +1,127 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  data/faq_categories.yaml
+#  Maps FAQ folder names → metadata used when building FAISS indices.
+#  Edit this file to add categories for your own knowledge base.
+# ─────────────────────────────────────────────────────────────────────────────
+
+categories:
+  register:
+    group: domain
+    label: register
+    description: "申請域名/續用域名/免登入續用/域名到期通知續用/代理人服務, 如何申請域名, 域名申請規則"
+
+  transfer:
+    group: domain
+    label: transfer
+    description: "移轉與讓渡/將域名轉入網路中文/辦理域名讓渡/變更域名管理帳戶"
+
+  updateinfo:
+    group: domain
+    label: updateinfo
+    description: "資料修改/修改域名註冊資料/修改域名共用聯絡人資料, 會員信箱與域名信箱的區別; 資料修改流程"
+
+  VAS:
+    group: domain
+    label: VAS
+    description: "加值服務/購買加值服務/設定轉址/設定shopline轉址和cname/如何啟用／停用域名鎖/如何設定WHOIS隱私?"
+
+  account:
+    group: membership
+    label: account
+    description: "帳號管理/創建會員帳號/修改會員信箱/如何將域名歸戶?/我無法登入(忘記帳號密碼)/變更會員密碼/修改會員資料/二階段驗證"
+
+  payment:
+    group: order
+    label: payment
+    description: "訂單管理/確認訂單狀態/如何使用折價券?/繳費方式與匯款資料/如何儲值預付款/尚未收到發票/修改發票資料/電子發票常見問題"
+
+  cloud:
+    group: tech
+    label: cloud
+    description: "雲端服務/Plesk生成CSR文件/安裝SSL憑證/開通企業信箱/EZ Mail郵件設定/EZ Mail開通設定與操作說明"
+
+  DNS:
+    group: tech
+    label: DNS
+    description: "DNS設置/DNS紀錄設定/DNS主機設定/A/AAAA紀錄設定/CNAME紀錄設定/MX紀錄設定/TXT紀錄設定/SPF/DKIM/DMARC/SRV/DNSSEC"
+
+  ssl:
+    group: tech
+    label: ssl
+    description: "SSL憑證/SSL遞交資料流程/SSL憑證驗證流程/SSL更新憑證/SSL續用憑證/CSR文件相關問題/SSL私鑰"
+
+  else:
+    group: else
+    label: "Past Issues Record / Definition of proper nouns"
+    description: "「需連結智慧卡」的訊息/DNS萬用字元與特殊符號/網域要轉出/產生CSR檔未看見私鑰/SSL/註冊人相關資料變更"
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Service pages — web pages scraped and added to the index at build time.
+#  Remove this section if you don't need live web content in your index.
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  AboutDomainName:
+    group: domain
+    label: AboutDomainName
+    description: "網域名稱 / 網址 / 域名是什麼？有什麼作用？"
+    url: "https://www.net-chinese.com.tw/services/domain/AboutDomainName"
+
+  DNSHosting:
+    group: domain
+    label: DNSHosting
+    description: "DNS是什麼？ / DNS是怎麼運作的？/ DNS常見的記錄類型"
+    url: "https://www.net-chinese.com.tw/services/domain/DNSHosting"
+
+  DomainManagement:
+    group: domain
+    label: DomainManagement
+    description: "為什麼我需要域名託管? / 託管的優勢？/ 如何成為VIP"
+    url: "https://www.net-chinese.com.tw/services/domain/DomainManagement#buynetcvip"
+
+  URLRedirection:
+    group: domain
+    label: URLRedirection
+    description: "轉址是什麼？ / 誰需要轉址服務？"
+    url: "https://www.net-chinese.com.tw/services/domain/URLRedirection#netcredirection"
+
+  DomainNameLock:
+    group: domain
+    label: DomainNameLock
+    description: "什麼是域名鎖？ / 什麼域名需要購買域名鎖？"
+    url: "https://www.net-chinese.com.tw/services/domain/DomainNameLock#whoneeddnlock"
+
+  RegistryLock:
+    group: domain
+    label: RegistryLock
+    description: "什麼是管理局鎖？ / 管理局鎖的用途？"
+    url: "https://www.net-chinese.com.tw/services/domain/RegistryLock"
+
+  WHOISPrivacy:
+    group: domain
+    label: WHOISPrivacy
+    description: "什麼是WHOIS？ / 網路中文的隱私服務"
+    url: "https://www.net-chinese.com.tw/services/domain/WHOISPrivacy#netcwhois"
+
+  SSLCertificates:
+    group: ssl
+    label: SSLCertificates
+    description: "SSL憑證 / TLS是什麼？ / 為什麼需要SSL憑證？ / SSL憑證種類"
+    url: "https://www.net-chinese.com.tw/services/ssl/SSLCertificates"
+
+  SSLProductList:
+    group: ssl
+    label: SSLProductList
+    description: "SSL憑證產品列表 / SECTIGO / Digicert / Thawte / GlobalSign / GeoTrust"
+    url: "https://www.net-chinese.com.tw/services/ssl/SSLProductList#SECTIGO"
+
+  CloudWebBuild:
+    group: cloud
+    label: CloudWebBuild
+    description: "雲端架站與企業信箱 / 雲端服務介紹"
+    url: "https://www.net-chinese.com.tw/services/cloud/CloudWebBuild"
+
+  HtmlSiteInfoList:
+    group: cloud
+    label: HtmlSiteInfoList
+    description: "雲端服務申請頁面"
+    url: "https://www.net-chinese.com.tw/nc/index.php/HtmlSiteInfoList/Index"

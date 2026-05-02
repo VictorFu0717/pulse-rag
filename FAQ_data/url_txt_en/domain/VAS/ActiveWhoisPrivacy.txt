@@ -1,0 +1,29 @@
+TITLE:FAQ-How to Enable WHOIS Privacy?
+
+FAQ-How to Enable WHOIS Privacy?
+How to Enable WHOIS Privacy?
+What is WHOIS Privacy?
+· The WHOIS privacy protection service is provided to
+                      protect your personal information (Domain name
+                      registration information) from being exposed to the public
+                      and prevent it from being used by malicious spams or
+                      domain name-related harassment.
+· If you want to know more details please refer to
+WHOIS Privacy. (https://www.net-chinese.com.tw/en/services/domain/WHOISPrivacy#whoisintroduction)
+· If you want to know how to buy WHOIS privacy protection
+                      service, please refer to "
+How to buy (https://www.net-chinese.com.tw/en/faq/domain/VAS/AcquireValueAddService)
+".
+· If you have already purchased WHOIS Privacy service,
+                      please refer to the steps below to activate it.
+How to Enable WHOIS Privacy?
+1. After purchasing, you will find your domain name with
+                      WHOIS privacy protection service in “service to be
+                      opened”, and please click “Click to modify” on the right.
+2. Click “Enable”.
+Attention！
+* You can also enable the WHOIS privacy service in “Domain
+                      Management”. You can click the red pause button of the
+                      domain.
+* WHOIS Privacy service is not apply for all kinds of
+                      domain.

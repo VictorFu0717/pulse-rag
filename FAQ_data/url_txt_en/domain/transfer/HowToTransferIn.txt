@@ -1,0 +1,58 @@
+TITLE:FAQ-How to transfer in domain names？
+
+FAQ-How to transfer in domain names？
+How to transfer in domain names？
+Process Before Transferring in
+1. Please confirm the expiration date of your domain name.
+                      The transfer process period will be different according
+                      different policy of domain name. We suggest you operate
+                      one month in advance for avoiding transfer failure.
+2. Please inform the current registrar that you need to
+                      transfer out your domain name for making sure that your
+                      domain name can be transferred.
+3. Please note your DNS information can not be modified
+                      when transferring, please make sure your DNS will not be
+                      interruptted when transferring.
+Transfer in
+1. Log in to your account.
+2. Click your account on the top right and choose "Domain
+                      Management".
+3. Click "Domain Name Transfer In", enter your domain name
+                      and AuthCode > Click "Check".
+*Please notice the auth code’s validity period
+4.“Add to cart” and “Check out”.
+5. Click "Next".
+6. Click User's Agreement and Click "Agree".
+7. Confirm the shopping list and click "Check Out".
+8. Select a payment method.
+9. Click "Services to be opened" > "Choose Contacts for
+                      Domains"
+10. Choose or create your domain name contact information
+                      and click "Submit domain name contact information".
+There are three ways to choose a contact.
+Click "Add" and create a new domain name contact
+                      information > Click "Create"
+If you have created the contact before, you can choose a
+                      domain name contact information that you need to use
+                      directly. You can click “查看” to check the contact
+                      information also.
+Fill in the CTID directly and click "ok".
+11.After checking your information, please click "Submit
+                      domain name contact information".
+12. Domain contact email address will receive an
+                      email(FOA). Please click the link to finish the transfer
+                      in process.
+Notice
+●The Domain transfer rule is different according to the
+                        policy of each registry.
+●Please contact the current registrar and check the
+                        domain name is able to transfer.
+●It may take 5-7 business days to finish the transfer
+                        process, the actual process period will be different
+                        according to different kind of domain.
+●Please make sure that the DNS servers will not be
+                        stopped in the transfer period. If your DNS servers are
+                        stopped, the domain name related services will be
+                        affected.
+●You can’t modify your DNS setting and domain
+                        information when your domain is pending transfer.

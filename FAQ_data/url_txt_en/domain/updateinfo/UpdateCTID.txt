@@ -1,0 +1,26 @@
+TITLE:FAQ-Update CTID
+
+FAQ-Update CTID
+Update CTID
+The Steps of Updating CTID
+1.Log in your account
+2. Click your account on the top right and choose
+                        "Domain Management"
+3. Click “Contact Management” ＞ “Modify”
+*You can press “Search” button to search domain name
+                        quickly
+4.Modify the contact information and click “save” after
+                        confirming it is correct
+Please Note
+*Atfer updating information of CTID, the other domain
+                        names using the same CTID will be modified.
+*Please click the domain name,don't tick the
+                        checkbox.(step 3)
+*Click the amount of “Current Domain Name”, you will see
+                        the list of domain names useing this CTID now (step3)
+*If you need to modify VAT Number and Company
+                        Name,please refer to"How to Change Owner"
+*The domain e-mail can't be modified on system,please
+                        refer to“Modify Domain-e-mail address”
+*If you have any question, please feel free to contact
+                        us.

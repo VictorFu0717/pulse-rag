@@ -1,0 +1,97 @@
+TITLE:常見問題-如何申請域名?
+
+常見問題-如何申請域名?
+如何申請域名?
+一、域名申請規則
+部分種類的網域名稱有資格限制，例如在當地設立公司或當地居民身份才能提出申請，視不同種類的域名後綴而有不同，您可以參考【
+域名百科 (https://www.net-chinese.com.tw/services/domainname)
+】查詢您想申請域名的資格限制和費用
+如需了解更多可參考【
+認識域名百科 (https://www.net-chinese.com.tw/pageNews/domainKnowledge/page/wiki)
+】【
+認識域名生命週期 (https://www.net-chinese.com.tw/pageNews/domainKnowledge/lifecycle)
+】
+*
+.TW域名 (https://www.net-chinese.com.tw/services/domainname/TW.json)
+*
+.COM域名 (https://www.net-chinese.com.tw/services/domainname/com.json)
+*
+.CN域名 (https://www.net-chinese.com.tw/services/domainname/CN.json)
+*
+.HK域名 (https://www.net-chinese.com.tw/services/domainname/HK.json)
+*
+.JP域名 (https://www.net-chinese.com.tw/services/domainname/JP.json)
+*
+.SG域名 (https://www.net-chinese.com.tw/services/domainname/SG.json)
+*
+.TH域名 (https://www.net-chinese.com.tw/services/domainname/TH.json)
+*
+.KR域名 (https://www.net-chinese.com.tw/services/domainname/KR.json)
+二、域名申請流程
+1.
+                      請先登入會員，若還未加入網路中文會員，請先點選網站右上角的【註冊】
+如需了解加入會員流程，可參考【
+創建會員帳戶 (https://www.net-chinese.com.tw/faq/membership/account/CreateAccount)
+】
+2. 在
+網中域名購買頁 (https://www.net-chinese.com.tw/nc/index.php/Nc5/DnNameQuery)
+中方框中輸入想申請的域名(後綴可與域名一起輸入或下方欄位勾選擇一)並點選【查詢】
+3.
+                      如域名未被註冊會出現加入購物車，點選【加入購物車】(如要購買多筆可以重複以上動作)，確認數量後點選【立即結帳】
+如果出現【不可註冊】畫面，可能域名已被其他人註冊，可以考慮透過
+                      【
+域名買回 (https://www.net-chinese.com.tw/services/brand/DomainBuyBack)
+】取得想要的域名
+4. 點選【年限】可下拉選擇申請年限 > 點選【下一步】
+*域名申請最高年限會因為不同種類域名而不相同
+5.
+                      點選【選擇加值服務】可選擇您要購買的加值服務(如不購買無須點選)
+                      > 下一步
+■加值服務介紹
+*
+轉址介紹 (https://www.net-chinese.com.tw/services/domain/URLRedirection)
+*
+所有權移轉介紹 (https://www.net-chinese.com.tw/faq/domain/transfer/HowToChangeOwner)
+*
+CDN加速介紹 (https://www.net-chinese.com.tw/services/domain/CDN)
+*
+whois隱私介紹 (https://www.net-chinese.com.tw/services/domain//WHOISPrivacy)
+*如果您想申請的域名後綴有資格限制，但目前不符合資格限制，可以考慮購買代理人服務
+6. 同意條款請打勾按【同意】
+7. 確認域名、申請年限、金額無誤後按【結帳】
+*域名申請後不可改名、退款、請確認購買的域名無誤後再下單
+8.
+                      請選擇付款方式和填寫電子發票資料（如果之前有填過發票資訊，請選擇【舊有發票資料】，若舊有發票資料為空白則改選【新增發票資料】再填入，如您申請之域名不可使用匯款，請您預先儲值預付款
+*預付款儲值請參考【
+如何儲值預付款 (https://www.net-chinese.com.tw/faq/order/payment/Prepayment)
+】
+*訂單完成後，網路中文將於五個工作天內寄送電子發票至您所填寫的信箱
+9.
+                      付款完成後系統會將您導向待開通服務頁面，請在右側尋找您剛購買的域名並點擊後方的【選擇域名聯繫資料】
+10.
+                      建立域名聯絡人資料(RATB)，請點選R(註冊人)右側的【新增】鈕
+11.
+                      畫面下方填寫公司基本資料，填妥資料後，下方再點選【建立資料】
+*資料請務必填寫正確並符合域名註冊規則
+*英文地址有字數限制，請填入到英文路名，城市和國家無需填入
+12.
+                      請在R(註冊人)下方空格打勾，系統會自動帶入相同ATB基本資料，完成後按【域名資料提交】
+三、如何確認域名申請成功？
+付款完成並填寫域名基本資料後，請您至左手邊【域名管理】>【域名總覽】
+*如果您的域名狀態顯示
+【正常】
+且【到期日】已顯示，表示域名已申請完成
+*如果您的域名狀態顯示
+【等待處理中】
+，表示網路中文收到訂單並處理申請中，請稍候
+■您可能還需要
+*
+繳費方式與匯款資料 (https://www.net-chinese.com.tw/faq/order/payment/PaymentMethods)
+*
+設定DNS為自管/代管 (https://www.net-chinese.com.tw/faq/tech/DNS/DNSManagement)
+*
+設定DNS紀錄 (https://www.net-chinese.com.tw/faq/order/payment/DNSSetting)
+※注意事項
+*域名申請資訊請著實填寫，為日後變更域名的重要依據（域名註冊人可與會員管理人不同）
+*請先確認是否符合域名申請資格 (可點選域名旁邊的問號查看)
+*域名申請後不可改名、退款

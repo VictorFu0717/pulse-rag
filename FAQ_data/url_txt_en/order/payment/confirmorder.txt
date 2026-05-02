@@ -1,0 +1,8 @@
+TITLE:FAQ-How to confirm my order ?
+
+FAQ-How to confirm my order ?
+How to confirm my order ?
+Confirm My Order
+1. Please log in your account.
+2. Click "Order Management"
+3. You can check your "Pending Order" and "Order History"

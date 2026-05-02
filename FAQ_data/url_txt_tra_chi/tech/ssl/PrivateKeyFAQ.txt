@@ -1,0 +1,36 @@
+TITLE:常見問題-SSL私鑰常見問題
+
+常見問題-SSL私鑰常見問題
+SSL私鑰常見問題
+一、私鑰是什麼
+在使用網站主機生成CSR文件時，主機會一併產生一組與這個CSR相符的私密金鑰(Private
+                      Key)，請記得將您的私鑰保存好，並勿洩漏此組金鑰，如私鑰外洩，為保護您的資料安全，憑證商可能撤銷此組憑證
+當您安裝以此組CSR文件送件核發的SSL憑證時，憑證需與該組私鑰配對，若遺失私鑰，或將私鑰存放於錯誤的路徑，將導致您的SSL憑證安裝失敗
+二、私鑰的格式
+常見的私鑰副檔名可能為 .pem 和 .key
+                      ，而私鑰的內容以【-----BEGIN PRIVATE
+                      KEY-----】開頭，以【-----END PRIVATE
+                      KEY-----】結尾，務必完整保留
+三、私鑰的位置
+*Windows
+                      IIS不會顯示您的金鑰檔，如果您需要憑證檔，可在IIS中匯出憑證，匯出憑證教學請參考【
+Windows Server 指南 (https://www.net-chinese.com.tw/nc5_file/faq/CSR_Windows_IIS.pdf)
+】第四章
+→ 需留意IIS無法直接匯入私鑰，請打包成PFX檔後再匯入
+*Apache的私鑰存放位置通常位於C:/apache24(2.2)/conf/目錄(Winsdows)或etc/pki/tls(/cert)或etc/ssl目錄(Linux)，因環境設定會有不同，這時可於設定檔案httpd.conf或httpd-ssl.conf內找到私密金鑰的位置，SSLCertificateKeyFile這行會顯示私密金鑰的檔案路徑
+*Plesk的私鑰會於您生成CSR文件時，由系統一併儲存於該SSL的存放路徑下，詳細可參考【
+Plesk生成CSR文件 (https://www.net-chinese.com.tw/faq/tech/cloud/GeneratesCSRandInstallSSL)
+】第四章
+*因各伺服器系統與版本不同，私鑰會有相異的管理方式，詳細可參考該服務商提供之教學文件
+四、遺失私鑰
+若您於安裝SSL憑證時發現私鑰遺失，將造成SSL安裝失敗。請您重新生成CSR文件，並與SSL服務提供商聯繫重發憑證
+如果您的SSL於網路中文購買，可登入會員後，點選左手邊選單【SSL憑證】，找到您的憑證後，於設定點選【更新憑證】重發憑證，詳細說明請參考【
+SSL更新憑證 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLReissue)
+】
+*更新憑證需重新驗證，請參考【
+SSL遞交資料流程 (https://www.net-chinese.com.tw/faq/tech/ssl/HowToConfigureSSL)
+】並完成【
+SSL憑證驗證流程 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLValidation)
+】
+五、憑證安裝多台主機
+若SSL憑證需安裝於多台主機，於生成CSR文件時，請選擇其中一台主機生成，並將憑證私鑰後續佈署於其他主機，網站主機需有私鑰才能安裝憑證

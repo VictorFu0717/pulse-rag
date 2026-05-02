@@ -1,0 +1,33 @@
+TITLE:FAQ-MX record
+
+FAQ-MX record
+MX record
+How to set MX record ?
+You can use domain name in email address by setting MX
+                      record.
+For example, service@
+net-chinese.com
+Your email address will be @net-chinese.com after you set
+                      a blank A record.
+If you want to set @mail.net-chinese.com, you have to set
+                      an A record of mail. After that, you can enter
+                      mail.net-chinese.com in “Mail Server”.
+Please refer “
+A record (https://www.net-chinese.com.tw/en/faq/tech/DNS/ARecord)
+” for more details.
+You can set which is the prior name server and which is
+                      the second one in “Priority”.
+It will be the prior name server when its data is
+                      smaller.(The data is better to be the multiple of 10)
+For Example :
+Priority
+service.netc.tw
+10
+mail.netc.tw
+20
+Notice :
+Do not enter domain name in “Hostname/cname. For example,
+www.netc.tw (http://www.netc.tw)
+.
+If there is any mistake, it would make your record
+                      invaild.

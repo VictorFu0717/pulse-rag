@@ -1,0 +1,18 @@
+TITLE:常见问题-如何设定WHOIS隐私?
+
+常见问题-如何设定WHOIS隐私?
+如何设定WHOIS隐私?
+WHOIS隐私设定流程
+1.
+                      购买完成後会将您带回“待开通服务”页面，找到您购买whois隐私服务的域名，点击後方的“点击进行设定”。
+2. 点选“启用”
+※注意事项
+购买成功的whois隐私服务在域名总览页面也会从灰色勾勾变成橘色暂停符号，点选暂停符号也可启用。
+域名後面的灰色勾勾可购买/续用whois隐私服务(限单笔)。
+可在购买域名时一同加购加值服务，在购物流程中的购物加值清单(2)勾选即可。
+并非所有後缀皆可以申请whois隐私服务。
+详细说明请参考 : 『
+WHOIS隐私 (https://www.net-chinese.com.tw/cn/services/domain/WHOISPrivacy)
+』
+如有任何问题欢迎来信询问：
+service@net-chinese.com.tw (https://www.net-chinese.com.tw/mailto:service@net-chinese.com.tw)

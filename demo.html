@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Net-Chinese 智慧客服</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #1a56db;
+      --primary-dark: #1245b8;
+      --primary-light:#dbeafe;
+      --bg:           #e8f0fb;
+      --surface:      #ffffff;
+      --surface2:     #f0f6ff;
+      --border:       #c3d4f5;
+      --text:         #0d1f3c;
+      --text-muted:   #5a7ab5;
+      --bubble-bot-bg:#ffffff;
+      --bubble-bot-c: #0d1f3c;
+      --shadow:       0 8px 32px rgba(26,86,219,.13), 0 1px 4px rgba(26,86,219,.07);
+      --copy-bg:      #e8f0fb;
+      --copy-hover:   #c3d4f5;
+    }
+    [data-theme="dark"] {
+      --primary:      #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-light:#1e3a5f;
+      --bg:           #0f172a;
+      --surface:      #1e293b;
+      --surface2:     #162032;
+      --border:       #334155;
+      --text:         #f1f5f9;
+      --text-muted:   #64748b;
+      --bubble-bot-bg:#1e293b;
+      --bubble-bot-c: #f1f5f9;
+      --shadow:       0 8px 32px rgba(0,0,0,.4);
+      --copy-bg:      #334155;
+      --copy-hover:   #475569;
+    }
+
+    body {
+      font-family: 'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .3s;
+    }
+
+    .chat-wrapper {
+      width: min(800px, 100vw);
+      height: min(90vh, 840px);
+      background: var(--surface);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: background .3s, border-color .3s;
+    }
+
+    /* ── Header ── */
+    .chat-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+      transition: background .3s, border-color .3s;
+    }
+    .header-logo {
+      width: 38px; height: 38px;
+      background: var(--primary-light);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; flex-shrink: 0;
+      transition: background .3s;
+    }
+    .header-info { flex: 1; }
+    .header-title { font-size: 15px; font-weight: 700; color: var(--text); transition: color .3s; }
+    .header-sub   { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .header-actions { display: flex; gap: 6px; align-items: center; }
+
+    .hdr-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+      transition: all .18s;
+      font-family: inherit;
+    }
+    .hdr-btn:hover { background: var(--bg); color: var(--text); border-color: var(--text-muted); }
+    .hdr-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    .theme-btn {
+      width: 34px; height: 20px;
+      border-radius: 10px;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+    .theme-btn::after {
+      content: '';
+      width: 14px; height: 14px;
+      background: var(--surface);
+      border-radius: 50%;
+      position: absolute;
+      top: 3px; left: 3px;
+      transition: transform .25s, background .3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    [data-theme="dark"] .theme-btn { background: var(--primary); }
+    [data-theme="dark"] .theme-btn::after { transform: translateX(14px); }
+    .theme-label { font-size: 11px; color: var(--text-muted); }
+
+    .status-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+      font-size: 11px;
+      border-radius: 20px;
+      padding: 3px 9px;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .status-badge {
+      background: #14532d22;
+      border-color: #166534;
+      color: #4ade80;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    /* ── 訊息區 ── */
+    #chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg);
+      transition: background .3s;
+    }
+    #chat-box::-webkit-scrollbar { width: 4px; }
+    #chat-box::-webkit-scrollbar-track { background: transparent; }
+    #chat-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    .welcome-block {
+      text-align: center;
+      padding: 26px 20px 14px;
+      animation: fadeUp .3s ease;
+    }
+    .welcome-icon { font-size: 38px; margin-bottom: 10px; }
+    .welcome-block h2 { font-size: 16px; color: var(--text); font-weight: 700; transition: color .3s; }
+    .welcome-block p  { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    .msg-row {
+      display: flex;
+      gap: 9px;
+      align-items: flex-end;
+      animation: fadeUp .22s ease;
+    }
+    .msg-row.user { flex-direction: row-reverse; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .msg-avatar {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      transition: background .3s, border-color .3s;
+    }
+
+    .msg-body { max-width: 74%; display: flex; flex-direction: column; gap: 3px; }
+    .msg-row.user .msg-body { align-items: flex-end; }
+
+    .bubble-wrap { position: relative; }
+    .bubble-wrap:hover .copy-btn { opacity: 1; }
+
+    .bubble {
+      padding: 10px 15px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      word-break: break-word;
+      transition: background .3s, border-color .3s, color .3s;
+    }
+    .bubble.bot {
+      background: var(--bubble-bot-bg);
+      color: var(--bubble-bot-c);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+    .bubble.user {
+      background: var(--primary);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    /* Markdown */
+    .bubble.bot p  { margin-bottom: .5em; }
+    .bubble.bot p:last-child { margin-bottom: 0; }
+    .bubble.bot ul, .bubble.bot ol { padding-left: 1.4em; margin-bottom: .5em; }
+    .bubble.bot li { margin-bottom: .2em; }
+    .bubble.bot strong { font-weight: 700; color: var(--primary); }
+    .bubble.bot h1,.bubble.bot h2,.bubble.bot h3 {
+      font-size: 14px; font-weight: 700; margin: .6em 0 .3em;
+      color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 3px;
+    }
+    .bubble.bot code {
+      background: var(--copy-bg);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .bubble.bot pre {
+      background: var(--copy-bg);
+      border-radius: 8px;
+      padding: 10px 13px;
+      overflow-x: auto;
+      margin: .5em 0;
+    }
+    .bubble.bot pre code { background: transparent; padding: 0; }
+    .bubble.bot a { color: var(--primary); text-decoration: underline; }
+    .bubble.bot blockquote {
+      border-left: 3px solid var(--primary);
+      padding-left: 10px;
+      color: var(--text-muted);
+      margin: .4em 0;
+    }
+
+    /* 游標閃爍（串流中）*/
+    .bubble.bot.streaming::after {
+      content: '▌';
+      display: inline;
+      color: var(--primary);
+      animation: blink .7s step-end infinite;
+      margin-left: 1px;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* 複製按鈕 */
+    .copy-btn {
+      position: absolute;
+      top: 7px; right: 7px;
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      background: var(--copy-bg);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity .18s, background .18s;
+    }
+    .copy-btn:hover { background: var(--copy-hover); }
+    .copy-btn svg { width: 13px; height: 13px; color: var(--text-muted); }
+    .copy-btn.copied { opacity: 1; }
+
+    .msg-time { font-size: 10.5px; color: var(--text-muted); padding: 0 3px; }
+
+    /* 打字動畫 */
+    .typing-bubble {
+      display: flex; align-items: center; gap: 4px;
+      padding: 13px 15px;
+    }
+    .typing-bubble span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--text-muted);
+      animation: tdot 1.2s infinite;
+    }
+    .typing-bubble span:nth-child(2) { animation-delay: .2s; }
+    .typing-bubble span:nth-child(3) { animation-delay: .4s; }
+    @keyframes tdot {
+      0%,80%,100% { transform:translateY(0); }
+      40%          { transform:translateY(-6px); }
+    }
+
+    /* ── 快捷問題 ── */
+    #quick-btns {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      padding: 4px 20px 13px;
+      background: var(--bg);
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+    .quick-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all .18s;
+      font-family: inherit;
+    }
+    .quick-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ── 輸入區 ── */
+    .input-area {
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: flex-end;
+      gap: 9px;
+      background: var(--surface);
+      flex-shrink: 0;
+      transition: background .3s, border-color .3s;
+    }
+    #user-input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 15px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      max-height: 110px;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+      transition: border-color .18s, background .3s, color .3s;
+    }
+    #user-input:focus { border-color: var(--primary); background: var(--surface); }
+    #user-input::placeholder { color: var(--text-muted); }
+
+    #send-btn {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .18s, transform .1s;
+    }
+    #send-btn:hover  { background: var(--primary-dark); }
+    #send-btn:active { transform: scale(.93); }
+    #send-btn:disabled { background: var(--border); cursor: not-allowed; }
+    #send-btn svg { width: 17px; height: 17px; }
+
+    .input-hint {
+      font-size: 11px; color: var(--text-muted);
+      padding: 0 2px 9px 18px;
+      background: var(--surface);
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+  </style>
+</head>
+<body>
+<div class="chat-wrapper">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-logo">🤖</div>
+    <div class="header-info">
+      <div class="header-title">Net-Chinese 智慧客服</div>
+      <div class="header-sub">網路中文資訊股份有限公司</div>
+    </div>
+    <div class="header-actions">
+      <span class="theme-label" id="theme-label">淺色</span>
+      <button class="theme-btn" id="theme-btn" title="切換深/淺色模式"></button>
+      <button class="hdr-btn" id="clear-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        清除
+      </button>
+      <button class="hdr-btn" id="export-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        匯出
+      </button>
+    </div>
+    <div class="status-badge"><span class="status-dot"></span>線上服務中</div>
+  </div>
+
+  <!-- 訊息區 -->
+  <div id="chat-box">
+    <div class="welcome-block">
+      <div class="welcome-icon">👋</div>
+      <h2>您好，請問有什麼可以協助您？</h2>
+      <p>我可以回答域名、SSL、DNS、帳號管理等相關問題</p>
+    </div>
+  </div>
+
+  <!-- 快捷問題 -->
+  <div id="quick-btns">
+    <button class="quick-btn">如何申請域名？</button>
+    <button class="quick-btn">域名如何續用？</button>
+    <button class="quick-btn">SSL 憑證購買流程</button>
+    <button class="quick-btn">忘記帳號密碼</button>
+    <button class="quick-btn">付款方式有哪些？</button>
+  </div>
+
+  <!-- 輸入區 -->
+  <div class="input-area">
+    <textarea id="user-input" rows="1" placeholder="輸入問題，按 Enter 送出…"></textarea>
+    <button id="send-btn" title="送出">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="white"/>
+      </svg>
+    </button>
+  </div>
+  <div class="input-hint">Shift + Enter 換行</div>
+
+</div>
+
+<script>
+  marked.setOptions({ breaks: true, gfm: true });
+
+  const chatBox   = document.getElementById('chat-box');
+  const input     = document.getElementById('user-input');
+  const sendBtn   = document.getElementById('send-btn');
+  const quickBtns = document.getElementById('quick-btns');
+
+  // ★ 指向新的 streaming endpoint
+  const API_URL = 'http://192.168.0.93:8002/query-stream';
+
+  const threadId = crypto?.randomUUID?.() ||
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+
+  const fmt = () => new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+
+  /* ── 深色模式 ── */
+  const themeBtn   = document.getElementById('theme-btn');
+  const themeLabel = document.getElementById('theme-label');
+  themeBtn.addEventListener('click', () => {
+    const dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    themeLabel.textContent = dark ? '深色' : '淺色';
+  });
+  function fixLinks(bubble) {
+  bubble.querySelectorAll('a').forEach(a => {
+    a.target = '_blank';
+    a.rel    = 'noopener noreferrer';
+  });
+}
+  /* ── 建立 User 訊息泡泡 ── */
+  function addUser(text) {
+    const row    = document.createElement('div');
+    row.className = 'msg-row user';
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = '👤';
+    const body   = document.createElement('div');
+    body.className = 'msg-body';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble user';
+    bubble.textContent = text;
+    const time   = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = fmt();
+    body.append(bubble, time);
+    row.append(avatar, body);
+    chatBox.append(row);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  /* ── 建立空的 Bot 泡泡（串流版），回傳 bubble element ── */
+  function createBotBubble() {
+    const row    = document.createElement('div');
+    row.className = 'msg-row bot';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = '🤖';
+
+    const body = document.createElement('div');
+    body.className = 'msg-body';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'bubble-wrap';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble bot streaming'; // streaming class 顯示游標
+
+    /* 複製按鈕 */
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'copy-btn';
+    copyBtn.title = '複製';
+    copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="9" y="9" width="13" height="13" rx="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(bubble.innerText.trim()).then(() => {
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/></svg>`;
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+        }, 2000);
+      });
+    });
+
+    const time = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = fmt();
+
+    wrap.append(bubble, copyBtn);
+    body.append(wrap, time);
+    row.append(avatar, body);
+    chatBox.append(row);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    return bubble;
+  }
+
+  /* ── 打字動畫（工具呼叫等待中）── */
+  function showTyping() {
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    row.id = 'typing-row';
+    const av  = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = '🤖';
+    const bd  = document.createElement('div');
+    bd.className = 'msg-body';
+    const bub = document.createElement('div');
+    bub.className = 'bubble bot typing-bubble';
+    bub.innerHTML = '<span></span><span></span><span></span>';
+    bd.append(bub);
+    row.append(av, bd);
+    chatBox.append(row);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+  const hideTyping = () => document.getElementById('typing-row')?.remove();
+
+  /* ── 主送出函式（Streaming）── */
+  async function send(text) {
+    text = (text ?? input.value).trim();
+    if (!text || sendBtn.disabled) return;
+
+    quickBtns.style.display = 'none';
+    addUser(text);
+    input.value = '';
+    autoResize();
+    sendBtn.disabled = true;
+
+    // 先顯示打字動畫（等待 agent 呼叫工具的期間）
+    showTyping();
+
+    let fullText = '';
+    let bubble   = null;
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ thread_id: threadId, question: text }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const reader  = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer    = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // 最後可能不完整，留著繼續拼
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const payload = line.slice(6).trim();
+          if (payload === '[DONE]') break;
+
+          let parsed;
+          try { parsed = JSON.parse(payload); } catch { continue; }
+
+          if (parsed.error) {
+            // 錯誤訊息
+            hideTyping();
+            if (!bubble) bubble = createBotBubble();
+            bubble.classList.remove('streaming');
+            fixLinks(bubble);
+            bubble.innerHTML = marked.parse(parsed.error);
+            break;
+          }
+
+          if (parsed.token) {
+            // 第一個 token 到了：移除打字動畫，建立正式泡泡
+            if (!bubble) {
+              hideTyping();
+              bubble = createBotBubble();
+            }
+            fullText += parsed.token;
+            // 即時 Markdown 渲染 + 保留游標
+            bubble.innerHTML = marked.parse(fullText);
+            chatBox.scrollTop = chatBox.scrollHeight;
+          }
+        }
+      }
+
+      // 串流結束：移除游標 class
+      if (bubble) {
+        bubble.classList.remove('streaming');
+        // 最後再 render 一次確保完整
+        bubble.innerHTML = marked.parse(fullText);
+        fixLinks(bubble);
+      } else {
+        // 沒有任何 token（純工具呼叫後無文字輸出）
+        hideTyping();
+      }
+
+    } catch (err) {
+      hideTyping();
+      if (!bubble) bubble = createBotBubble();
+      bubble.classList.remove('streaming');
+      bubble.innerHTML = marked.parse('⚠️ 伺服器暫時無法連線，請稍後再試，或撥打客服電話洽詢。');
+      console.error('Stream error:', err);
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
+  /* ── textarea 自動高度 ── */
+  function autoResize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 110) + 'px';
+  }
+  input.addEventListener('input', autoResize);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  sendBtn.addEventListener('click', () => send());
+
+  /* ── 快捷問題 ── */
+  document.querySelectorAll('.quick-btn').forEach(b =>
+    b.addEventListener('click', () => send(b.textContent))
+  );
+
+  /* ── 清除 ── */
+  document.getElementById('clear-btn').addEventListener('click', () => {
+    chatBox.innerHTML = `<div class="welcome-block">
+      <div class="welcome-icon">👋</div>
+      <h2>您好，請問有什麼可以協助您？</h2>
+      <p>我可以回答域名、SSL、DNS、帳號管理等相關問題</p>
+    </div>`;
+    quickBtns.style.display = 'flex';
+  });
+
+  /* ── 匯出 TXT ── */
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const rows = chatBox.querySelectorAll('.msg-row');
+    if (!rows.length) { alert('目前沒有對話記錄'); return; }
+    let txt = `Net-Chinese 智慧客服 對話記錄\n匯出時間：${new Date().toLocaleString('zh-TW')}\n${'─'.repeat(40)}\n\n`;
+    rows.forEach(r => {
+      const isUser = r.classList.contains('user');
+      const bub    = r.querySelector('.bubble');
+      const time   = r.querySelector('.msg-time');
+      if (!bub) return;
+      txt += `${isUser ? '您' : '客服'} [${time?.textContent || ''}]\n${bub.innerText.trim()}\n\n`;
+    });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain;charset=utf-8' }));
+    a.download = `客服對話_${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+TITLE:常見問題-如何設定WHOIS隱私?
+
+常見問題-如何設定WHOIS隱私?
+如何設定WHOIS隱私?
+一、什麼是whois隱私？
+1.whois隱私服務是以年計費的域名加值服務
+2.用whois隱私服務可避免個人訊息於whois上公開揭露
+*因各域名管理局規範不同，部分網域名稱不適用此服務
+■
+什麼是whois？ (https://www.net-chinese.com.tw/services/domain/WHOISPrivacy#whoisintroduction)
+■
+更多whois隱私說明請點此 (https://www.net-chinese.com.tw/services/domain/WHOISPrivacy#whoisprivacy)
+二、如何啟用/停用whois隱私
+請先登入會員
+點選右上方的會員帳號開啟下拉選單，點選【域名管理】
+購買成功的whois隱私服務可在域名總覽內管理
+*尚未啟動可點選【紅色暫停】按鈕啟用，啟用後會變成【綠色勾勾】
+*如需停用可點選【綠色勾勾】按鈕
+點選【啟用】/【停用】
+※注意事項
+*因各域名管理局規範不同，部分網域名稱不適用此服務
+*如需移轉會員或轉出域名，請先停用whois隱私服務
+*
+whois詳細說明請點此 (https://www.net-chinese.com.tw/services/domain/WHOISPrivacy)

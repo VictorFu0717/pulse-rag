@@ -1,0 +1,10 @@
+TITLE:FAQ-DNS Record Setting
+
+FAQ-DNS Record Setting
+DNS Record Setting
+How to set DNS record ?
+1. Please log in your account.
+2. Click "Domain Management".
+3. Click the domain name.
+4.Click "DNS" > Record Setting > Click "Add a Row" and
+                      enter your record > Save

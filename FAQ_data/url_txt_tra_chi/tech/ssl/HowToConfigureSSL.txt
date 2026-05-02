@@ -1,0 +1,27 @@
+TITLE:常見問題-SSL遞交資料流程
+
+常見問題-SSL遞交資料流程
+SSL遞交資料流程
+購買SSL憑證後，您需要完成【
+SSL資料遞交 (https://www.net-chinese.com.tw/faq/tech/ssl/HowToConfigureSSL)
+】與【
+SSL憑證驗證流程 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLValidation)
+】兩個步驟，完成後憑證商會直接將您的SSL憑證寄送給您。
+一、SSL遞交資料流程
+1. 請點選收合選單的「SSL憑證」，再點「未完成憑證」
+2. 點選「遞交資料」
+3.遞交CSR文件後點選【驗證CSR文件】
+*CSR文件需自行由您的網站主機內生成
+*生成CSR文件時所產生的私鑰請務必保留於網站主機內
+4.確認CSR解析資訊無誤後，選擇驗證方式與伺服器軟體
+*伺服器軟體: Apache/Microsoft IIS5.x 至6.x/Microsoft IIS 7.x及後續版本/Tomcat/Nginx/Plesk/其它
+*若不確定伺服器軟體，也可以選擇OTHER的選項，伺服器軟體的選項不影響憑證格式。
+5. 依相關指示填寫對應的欄位
+*請注意！凡組織驗證、延伸驗證憑證均需填寫組織資訊(英文填寫)
+6. 填寫管理人與技術人資訊，填寫完畢後按「確認申請」
+※注意事項
+1.請務必確認憑證申請之域名及申請資料之正確性。
+2.組織資訊支電話號碼務必填寫國碼與區碼，以免憑證商進行電話驗證時出現無法撥打之情況。（ex: +886-2-25319696）
+3.遞交資料後，仍須完成【
+SSL憑證驗證流程 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLValidation)
+】

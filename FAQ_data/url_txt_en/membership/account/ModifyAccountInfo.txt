@@ -1,0 +1,12 @@
+TITLE:FAQ-How to modify account info ?
+
+FAQ-How to modify account info ?
+How to modify account info ?
+How to modify account info ?
+1. Please log in your account.
+2. Click "Account".
+3. Modify your account info and click "Save".
+Notice
+Account ID can not be modified.
+If you need to modify Name/Company Name/Email, please
+                        mail to service@net-chinese.com.

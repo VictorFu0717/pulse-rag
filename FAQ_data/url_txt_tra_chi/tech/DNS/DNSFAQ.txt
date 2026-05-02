@@ -1,0 +1,48 @@
+TITLE:常見問題-DNS常見問題
+
+常見問題-DNS常見問題
+DNS常見問題
+Q1. 我已經向網路公司申請虛擬主機(Web hosting)，或自己架設了DNS主機，該如何設定DNS指向？
+您可以在登入後，進入“域名總覽”點擊該域名後再點擊DNS設定，選擇“DNS自管”並輸入您的主機資料後，按下“儲存”即可。
+Q2. DNS代管資料應如何設定？
+參考第一題，將自管改成代管並按下“儲存”即可。
+Q3. .tw/.台灣 域名之動態DNS該如何設定？
+首先登入管理系統，設定DNS為自管，填入以下資料：
+ns1.twnic.net.tw 　203.73.24.201
+ns2.twnic.net.tw 　210.17.9.227
+再幫您的電腦安裝 client 程式以配合 server 來做設定，
+請選擇您適合的作業系統平台下載程式
+: 程式下載
+相關資訊 :
+動態DNS說明
+動態DNS問答集
+Q4. DNS反解該如何設定
+網路中文僅提供DNS正解，DNS反解則是由DNS主機的ISP業者負責，假設您的DNS主機的ISP業者是中華電信，請聯絡中華電信為您設定反解即可。
+Q5. 我申請了.tw/.台灣網域的一站式服務，該如何設定DNS指向？
+一經啟用「.tw/.台灣網域的一站式服務」，即視同意財團法人台灣網路資訊中心(TWNIC)相關服務條款。網域名稱之DNS/IP設定將指向至TWNIC的一站式服務主機，其DNS資料如下：
+ns51.twnic.net.tw 203.73.24.71
+ns52.twnic.net.tw 124.9.9.56
+詳細資訊請參考 : 「
+.tw/.台灣網域的一站式服務
+」
+Q6. 我只有網頁的固定IP，該如何設定DNS指向網頁空間？
+如您沒有DNS主機，網路中文可以提供DNS代管，請參考第二題，設定DNS為代管，增設A記錄指向。
+                      設定請參考
+設定DNS紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/DNSSetting)
+。
+Q7. 我申請了google apps服務，該如何設定DNS指向？
+google apps服務需要設定五組MX記錄，首先登入管理系統，設定DNS為代管，下方新增記錄類別，選擇「MX」記錄，提醒您【主機或網域】維持空白不用填，【負責郵件主機+網域】則是填入ASPMX.L.GOOGLE.COM後面不用加點.) 詳細請參考
+Google說明 (https://support.google.com/a/answer/174125?hl=zh-Hant)
+如果google 需要您設定TXT記錄驗証，您可參考
+設定DNS紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/DNSSetting)
+新增google 給您的TXT記錄資料即可。
+Q8 . 我申請了"中文域名”，但DNS主機無法解析中文，也能使用DNS代管嗎？應如何設定?
+1. 可以的，目前除了「中文.tw」和「中文.台灣」域名需在DNS設定選擇TWNIC管理(如下圖)之外，其他中文域名都能使用DNS代管，同樣也是設定A記錄指向。
+2. 設定請參考如何
+設定DNS紀錄 (https://www.net-chinese.com.tw/faq/tech/DNS/DNSSetting)
+Q9. 為何我已將DNS指定完成，仍然無法連上泛用型中文URL的網頁？
+無法使用中文之URL，可能有下列4種情況：
+1. DNS未設定正確，您可以先透過 nslookup/dig 等工具查詢解析結果，看是否有正確回應。
+2. 防火牆連線未開啟，請檢查防火牆連線 udp 53 port和tcp 80 port是否已開啟並未阻擋連線。
+3. 網頁伺服器設定出現問題，您可開啟瀏覽器輸入中文網址測試連線，重新檢查伺服器設定是否正確。
+4. 網路連線發生問題，您可透過ping中文網域的方式來確認網路連線是否正常。

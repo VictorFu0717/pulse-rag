@@ -1,0 +1,25 @@
+TITLE:FAQ-SRV record
+
+FAQ-SRV record
+SRV record
+How to set SRV record ?
+TXT record can provide text information to sources outside
+                      your domain.
+1. Record types : choose SRV.
+2. Hostname/cname : Service and protocol for SRV. The
+                        format should be "xxx(service).xxx(protocol)". Take
+                        above picture as reference, _sip is service and _tls is
+                        protocol.
+3. IP/Domain name : The target for SRV record.
+4. Priority : Multiple records have the same name and
+                        service. Priority is used to decide which record is
+                        prior.
+5. Weights : Multiple records have the same name,
+                        service and priority. Wieghts is used to decide which
+                        record is prior.
+6. Port : Enter the Port number.
+Notice :
+You can set 50 DNS records for free.
+If there is any mistake, it would make your record
+                      invaild.
+The SRV record does not include TTS.

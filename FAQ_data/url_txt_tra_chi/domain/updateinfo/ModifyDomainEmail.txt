@@ -1,0 +1,33 @@
+TITLE:常見問題-如何修改域名信箱?
+
+常見問題-如何修改域名信箱?
+如何修改域名信箱?
+一、會員信箱與域名信箱的區別
+■【會員信箱】是您於網路中文註冊會員時填寫的管理人聯繫信箱，網路中文會由該信箱通知管理人域名相關訊息
+*功能：會員驗證信、重設密碼函、變更域名管理帳戶確認信、到期通知信(90天前)
+*登入會員後，請透過畫面左手邊【帳戶管理】>【帳戶總覽】查看
+*如需變更會員信箱請參考：
+如何修改會員信箱？ (https://www.net-chinese.com.tw/faq/domain/updateinfo/ModifyAccountInfo)
+■【域名信箱】是您註冊網域名稱時所填寫的註冊人聯繫信箱
+*功能：域名轉出確認信、域名轉入確認信、到期通知信(14天前)
+*登入會員後，請透過畫面左手邊【域名管理】>【域名總覽】>
+                      點擊該域名 >【域名基本資料】查看
+二、修改域名信箱
+*
+                      如要修改域名信箱（例如姓名、公司資料、信箱），請下載填寫【
+網域名稱資料變更申請書 (https://www.net-chinese.com.tw/nc5_file/faq/DN_RegistrantNameChange_Form.pdf)
+】，填上新資料，並附上所需文件用印傳真至(02)2531-9522，或email寄送至
+service@net-chinese.com.tw (https://www.net-chinese.com.tw/mailto:service@net-chinese.com.tw)
+，經確認無誤後將協助辦理
+→
+                      若域名為公司註冊，請附上公司最新變更登記表，並蓋上與證件相符之大小章
+→ 若域名為個人註冊，請附上個人身分證，並用印或簽名
+■ 您可能還需要
+* 如要修改域名聯繫資料，或公司已改名請點擊參考【
+修改域名資料 (https://www.net-chinese.com.tw/faq/domain/updateinfo/UpdateDomainInfo)
+】
+* 如要更改域名註冊資料，請點擊參考【
+域名讓渡 (https://www.net-chinese.com.tw/faq/domain/transfer/HowToChangeOwner)
+】
+※注意事項
+公司統編、公司中文名稱、英文名稱和電子郵件無法線上變更，也需填「網域名稱資料變更申請書」表單。

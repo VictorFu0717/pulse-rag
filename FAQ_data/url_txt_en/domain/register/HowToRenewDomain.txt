@@ -1,0 +1,42 @@
+TITLE:FAQ-How to renew domain names？
+
+FAQ-How to renew domain names？
+How to renew domain names？
+How to renew domain names ?
+You can choose to renew without logging in or renew after
+                      logging in.
+Renew without logging in
+1.
+Click here and be directed to the renew page. (https://www.net-chinese.com.tw/en/faq/membership/account/ForgetPassword)
+2. Choose language on the top right. Search your domain
+                      name.
+3. Click check out.
+4. Select a payment method and confirm payment.
+* You can only renew one year and can not renew add-valued
+                      services.
+* If you need to pay by paypal, please log in your account
+                      and renew.
+* If your domain name is expiring, please log in your
+                      account and renew.
+* If you are Pacname's customer, please log in your
+                      account and renew.
+Normal Renewal
+1. Log in your account.
+2. Click your account on the top right and choose "Domain
+                      Management".
+3. Click the domain which you want to renew.
+4. Click "Customized Renew" > "Selected Domain Renew" >
+                      "Check Out"
+5. Choose Value-Added Service that you need and click
+                      "Next".
+(Click "Next" directly if you don't need any Value-Added
+                      Service)
+6. Click User's Agreement and Click "Agree"
+7. Confirm shopping list and click "Check Out"
+8. Select a payment method.
+Notice
+Domain renewal rule is different according to policy of
+                        each registry.
+If your domain name is expired, please click "Domain
+                        Management" > "Pending for Process" to find your domain
+                        name.

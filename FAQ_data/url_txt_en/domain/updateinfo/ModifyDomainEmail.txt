@@ -1,0 +1,28 @@
+TITLE:FAQ-Modify Domain E-mail Address
+
+FAQ-Modify Domain E-mail Address
+Modify Domain E-mail Address
+Account E-mail v.s. Domain E-mail
+1.The function of account e-mail：
+(1)Notice letter of the expiring domain (before 90 days)
+(2)Member accounted verification
+(3)Reset password
+(4)Change the domain management account
+If you need to check your account e-mail address, please
+                      access the control panel,and click "Account"＞"Account
+                      Overview".
+2. The function of domain e-mail：
+(1)Notice letter of the expiring domain (before 14 days)
+(2)Some administrations will show the e-mail address on
+                      WHOIS
+(3)Confirm that the owner needs to transfer out
+(4)Confirm that the owner needs to transfer in
+If you need to check your domain e-mail address,please
+                      access the control panel ,and click "Domain
+                      Management"＞"My Domain Overview"＞chick the domain
+                      name＞"Domain Name Profile"
+The steps of Modifying Domain e-mail address
+*Please send e-mail to "service@net-chinese.com" for
+                      getting form, We will help you modify it as soon as
+                      possible after confirming the documents.
+*If you have any question, please feel free to contact us.

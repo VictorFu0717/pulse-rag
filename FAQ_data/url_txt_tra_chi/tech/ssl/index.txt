@@ -1,0 +1,39 @@
+TITLE:常見問題-SSL憑證
+
+常見問題-SSL憑證
+SSL憑證
+一、什麼是SSL憑證？
+SSL憑證是一種資訊傳輸的加密技術，能夠加密網站傳輸的資料，讓他人無法取得您的網站與客戶之間的隱私訊息。
+若您已經架設網站，卻仍未取得SSL憑證，建議您盡快為您網站安裝一個SSL憑證。
+若您還不了解什麼是SSL，您可以參考【
+SSL憑證介紹 (https://www.net-chinese.com.tw/services/ssl/SSLCertificates)
+】
+二、SSL產品列表
+如果您想查看憑證列表，請點擊【
+SSL產品列表 (https://www.net-chinese.com.tw/services/ssl/SSLProductList)
+】
+您可以點擊黃色按鈕查看各SSL品牌的產品介紹和列表
+點選【購買】把SSL憑證加入購物車後，點選【立即結帳】即可進入購物車
+三、如何結帳
+確認您購買的商品和價格後請點選【下一步】
+*年限與數量不可調整
+請閱讀同意條款並打勾按【同意】
+確認品項正確後點選【結帳】
+請選擇付款方式和填寫發票資料
+*預付款儲值請參考【
+如何儲值預付款 (https://www.net-chinese.com.tw/faq/order/payment/Prepayment)
+】
+四、SSL遞交資料與驗證
+付款完成後，您需要進行遞交資料與驗證的流程，完成後將會收到該憑證服務商寄給您的SSL憑證，流程請參考下列連結。
+*SSL遞交資料流程 (https://www.net-chinese.com.tw/faq/tech/ssl/HowToConfigureSSL)
+*SSL憑證驗證流程 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLValidation)
+五、延伸閱讀
+付款完成後，您需要進行遞交資料與驗證的流程，完成後將會收到該憑證服務商寄給您的SSL憑證，流程請參考下列連結。
+*SSL憑證教學文件 (https://www.net-chinese.com.tw/services/ssl/SSLteachingfile)
+*SSL常見問題 (https://www.net-chinese.com.tw/faq/tech/ssl/SSLFAQ)
+*高年限SSL憑證即將走入歷史? (https://www.net-chinese.com.tw/pageNews/10040)
+*Safari將SSL證書的有限期限限制為一年 (https://www.net-chinese.com.tw/pageNews/9988)
+*SSL憑證發展 (https://www.net-chinese.com.tw/news/page/SSLCertificateDevelopment)
+※注意事項
+*SSL憑證期間發證會因驗證流程與SSL憑證類型而有不同
+*因應各大瀏覽器的新政策，網路中文於2020年8月起停止販售高年限憑證
