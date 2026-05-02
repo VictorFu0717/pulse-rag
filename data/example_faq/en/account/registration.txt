@@ -1,0 +1,13 @@
+Creating an AcmeTech Account
+
+1. Go to acmetech.example.com/signup
+2. Enter your email address and choose a secure password (min. 8 characters)
+3. Check your email for a verification link and click it within 24 hours
+4. Complete your profile: name, company (optional), billing address
+
+Requirements:
+- Valid email address (used for login and notifications)
+- Password: at least 8 characters, must include letters and numbers
+
+One email address can only be registered once.
+If you receive "email already in use", try logging in or use password reset.

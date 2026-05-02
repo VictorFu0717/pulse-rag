@@ -42,6 +42,8 @@ class RerankerConfig(BaseModel):
 class KnowledgeBaseConfig(BaseModel):
     name: str
     index_path: str
+    data_dir: Optional[str] = None      # source dir for scripts/build_index.py
+    url_prefix: Optional[str] = None    # base URL prepended to source links (optional)
     tool_name: str
     tool_description: str
     fallback_group: Optional[str] = None

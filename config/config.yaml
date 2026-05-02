@@ -1,10 +1,12 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  Pluse RAG  —  config/config.yaml
-#  Edit this file to customise the system for your company.
+#
+#  This is the single file you need to edit to customise the system.
+#  Replace the example values with your own company's settings.
 # ─────────────────────────────────────────────────────────────────────────────
 
 app:
-  name: "Net-Chinese AI Customer Service"
+  name: "AcmeTech AI Assistant"   # ← change to your app name
   host: "0.0.0.0"
   port: 8002
   cors_origins: ["*"]
@@ -22,7 +24,7 @@ llm:
 #   provider: "openai"
 #   model: "gpt-4o-mini"
 
-# Switch to any OpenAI-compatible endpoint:
+# Any OpenAI-compatible endpoint (vLLM, LM Studio, Ollama, etc.):
 # llm:
 #   provider: "custom"
 #   model: "my-model"
@@ -31,55 +33,52 @@ llm:
 
 # ── Embeddings ────────────────────────────────────────────────────────────────
 embeddings:
-  model: "BAAI/bge-m3"
+  model: "BAAI/bge-m3"   # multilingual; change to any HuggingFace sentence-transformer
   device: "auto"          # auto | cpu | cuda
 
 # ── Retrieval ─────────────────────────────────────────────────────────────────
 retrieval:
-  faiss_k: 8              # candidates from FAISS before reranking
-  rerank_top_k: 3         # kept after reranking
+  faiss_k: 8              # candidates fetched from FAISS before reranking
+  rerank_top_k: 3         # documents kept after reranking
 
 # ── Reranker ──────────────────────────────────────────────────────────────────
 reranker:
   model: "BAAI/bge-reranker-v2-minicpm-layerwise"
-  cutoff_layers: [28]     # lower = faster, slightly less accurate (range 8–40)
+  cutoff_layers: [28]     # 8–40; lower = faster, slightly less accurate
   use_fp16: true
   batch_size: 16
 
 # ── Knowledge Bases ───────────────────────────────────────────────────────────
-# Each entry becomes one retrieval tool available to the agent.
-# Add, remove, or rename entries to match your data.
+# Each entry creates one retrieval tool for the agent.
+# - data_dir   : folder with your .txt FAQ files (used by build_index.py)
+# - index_path : where the FAISS index is saved / loaded
+# - url_prefix : (optional) prepended to file paths to generate source links
+#
+# Add more entries to support additional languages or domains.
 knowledge_bases:
-  - name: "traditional_chinese"
-    index_path: "faiss_index_tra_chi"
-    tool_name: "retrieve_tra_chi"
-    tool_description: >
-      若客戶使用繁體中文且詢問跟公司提供的服務相關問題使用此工具檢索資料庫回應客戶，
-      包括但不限於：域名申請與續用/資料修改/轉移與讓渡/加值服務/帳號管理/
-      訂單管理/DNS設置/SSL憑證/雲端服務等等
-    fallback_group: "else"   # docs in this group are always appended to results
-    fallback_k: 1
-
-  - name: "simplified_chinese"
-    index_path: "faiss_index_sim_chi"
-    tool_name: "retrieve_sim_chi"
-    tool_description: >
-      若客戶使用簡體中文且詢問跟公司提供的服務相關問題使用此工具檢索資料庫回應客戶，
-      包括但不限於：域名申請與續用/資料修改/轉移與讓渡/加值服務/帳號管理/
-      訂單管理/DNS設置/SSL憑證/雲端服務等等
-
   - name: "english"
+    data_dir: "data/example_faq/en"
     index_path: "faiss_index_en"
+    url_prefix: "https://help.acmetech.example.com/en"   # ← change or remove
     tool_name: "retrieve_en"
     tool_description: >
-      Use this tool when the customer communicates in English to retrieve
-      information about services including domain registration, transfer,
-      DNS management, SSL certificates, cloud hosting, and more.
+      Search the English knowledge base for customer questions about
+      products, pricing, billing, account management, and technical support.
+
+  # ── Add more knowledge bases for other languages / domains ────────────────
+  #
+  # - name: "traditional_chinese"
+  #   data_dir: "data/my_faq/zh-TW"
+  #   index_path: "faiss_index_zh_tw"
+  #   url_prefix: "https://help.acmetech.example.com/zh-TW"
+  #   tool_name: "retrieve_zh_tw"
+  #   tool_description: >
+  #     Search the Traditional Chinese knowledge base for customer questions.
 
 # ── Plugins ───────────────────────────────────────────────────────────────────
 tools:
-  web_search_enabled: true      # requires TAVILY_API_KEY in .env
-  domain_checker_enabled: true  # requires WHOISJSON_API_KEY (falls back to local whois)
+  web_search_enabled: true       # requires TAVILY_API_KEY in .env
+  domain_checker_enabled: false  # enable if your service involves domain names
 
 # ── Memory ────────────────────────────────────────────────────────────────────
 memory:

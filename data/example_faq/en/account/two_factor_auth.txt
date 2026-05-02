@@ -1,0 +1,18 @@
+Two-Factor Authentication (2FA)
+
+Enable 2FA:
+1. Log in → Account Settings → Security → Two-Factor Authentication
+2. Click "Enable 2FA"
+3. Scan the QR code with an authenticator app (Google Authenticator, Authy, etc.)
+4. Enter the 6-digit code to confirm setup
+5. Save your backup codes in a secure place
+
+Disable 2FA:
+1. Log in → Account Settings → Security → Two-Factor Authentication
+2. Click "Disable" and enter your current 2FA code to confirm
+
+Lost access to your authenticator app?
+Use one of your saved backup codes on the login page.
+If you have no backup codes, contact support@acmetech.example.com with your account ID.
+
+Note: 2FA is mandatory for all Enterprise plan accounts.

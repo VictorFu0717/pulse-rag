@@ -1,0 +1,25 @@
+Common Issues & Solutions
+
+Website shows "Error 500":
+- Check your error logs in Control Panel → Logs → Error Log
+- Common causes: PHP version mismatch, corrupt .htaccess, exhausted memory limit
+- Increase PHP memory limit: add "php_value memory_limit 256M" to .htaccess
+
+Email not sending:
+- Verify SMTP settings: host=mail.acmetech.example.com, port=587, STARTTLS
+- Check your spam folder
+- Ensure your domain's SPF record includes: v=spf1 include:acmetech.example.com ~all
+
+SSL certificate not working:
+- Check certificate status in Control Panel → SSL
+- If expired, click Renew. Free Let's Encrypt certificates renew automatically
+- Clear your browser cache after renewal
+
+Cannot connect via FTP:
+- Use SFTP (port 22) instead of plain FTP
+- Verify your username and password in Control Panel → FTP Accounts
+
+Still stuck? Contact us:
+  Live Chat: available 9am–6pm UTC (Mon–Fri)
+  Email: support@acmetech.example.com
+  Response time: within 4 hours for Business/Enterprise, within 24 hours for Starter

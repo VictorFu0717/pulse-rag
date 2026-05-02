@@ -1,4 +1,4 @@
-# Pluse RAG
+# Pulse RAG
 
 > A configurable, production-ready **Agentic RAG** framework for enterprise customer service — built with LangGraph, FAISS, and BGE Reranker.
 
@@ -9,17 +9,17 @@
 
 ---
 
-## What is Pluse RAG?
+## What is Pulse RAG?
 
-Pluse RAG is an **agentic RAG chatbot framework** designed for enterprise customer support.  
-It ships with a fully working example (Net-Chinese domain registrar) that you can replace with your own knowledge base in minutes.
+Pulse RAG is a **plug-and-play Agentic RAG chatbot framework** for enterprise customer service.  
+Drop in your FAQ documents, set your company name and LLM, and have a production-ready chatbot running in minutes.
 
 **Key capabilities:**
-- **Two-stage retrieval** — FAISS vector search → BGE LayerWise Reranker for high precision
-- **Multi-language** — separate indices per language, each becomes its own agent tool
+- **Two-stage retrieval** — FAISS vector search → BGE LayerWise Reranker for high-precision answers
+- **Config-driven** — swap LLM provider, embedding model, add knowledge bases — no code changes needed
+- **Multi-language** — one knowledge base per language, each becomes its own agent tool
 - **Streaming** — Server-Sent Events for real-time token output
-- **Config-driven** — swap LLM, embeddings, add knowledge bases via `config/config.yaml`
-- **Plugin tools** — web search (Tavily) and domain availability check included; add your own
+- **Plugin tools** — web search (Tavily) and domain availability check; add your own in `plugins/`
 - **Conversation memory** — LangGraph InMemorySaver with smart message trimming
 
 ---
@@ -27,36 +27,36 @@ It ships with a fully working example (Net-Chinese domain registrar) that you ca
 ## Architecture
 
 ```
-User
- │
- ▼
-FastAPI  (/query  /query-stream  /health)
- │
- ▼
-LangGraph Agent  (create_agent + trim_messages middleware)
- │
- ├─► retrieve_tra_chi ──► FAISS (zh-TW)  ──► BGE Reranker ──► top-k docs
- ├─► retrieve_sim_chi ──► FAISS (zh-CN)  ──► BGE Reranker ──► top-k docs
- ├─► retrieve_en      ──► FAISS (en)     ──► BGE Reranker ──► top-k docs
- ├─► net_search       ──► Tavily Web Search
- └─► check_domain_*   ──► WhoisJSON API / local whois fallback
- │
- ▼
-LLM  (Ollama Qwen / OpenAI / any OpenAI-compatible endpoint)
- │
- ▼
-Response (streaming SSE or blocking JSON)
+User Query
+    │
+    ▼
+FastAPI  (/query · /query-stream · /health)
+    │
+    ▼
+LangGraph Agent  ← trim_messages middleware (sliding window)
+    │
+    ├─► retrieve_en  ──► FAISS index ──► BGE Reranker ──► top-k docs
+    ├─► retrieve_*   ──► (add more knowledge bases in config.yaml)
+    ├─► net_search   ──► Tavily Web Search
+    └─► (your custom plugins)
+    │
+    ▼
+LLM  (Ollama · OpenAI · any OpenAI-compatible endpoint)
+    │
+    ▼
+Response  (streaming SSE or blocking JSON)
 ```
 
-### Why these choices?
+### Why these design choices?
 
 | Decision | Rationale |
 |---|---|
-| **LangGraph** over raw LCEL chain | Built-in checkpointing, tool-call loop, middleware hooks |
+| **LangGraph** agent | Built-in checkpointing, tool-call loop, middleware hooks for message trimming |
 | **BGE LayerWise Reranker** | 5–15% precision gain over vector similarity alone; early-exit layers trade accuracy for speed |
-| **FAISS** over hosted vector DB | Zero infra dependency; indices are files — easy to version and ship |
-| **Streaming SSE** over WebSocket | Simpler client implementation; stateless per-request |
-| **trim_messages middleware** | Prevents orphaned ToolMessages from triggering blank LLM responses on context overflow |
+| **FAISS** over hosted vector DB | Zero infrastructure dependency; indices are files — easy to version and ship |
+| **Streaming SSE** | Simpler client than WebSocket; stateless per-request |
+| **trim_messages middleware** | Prevents orphaned ToolMessages from causing blank responses on context overflow |
+| **Config-driven KBs** | Each knowledge base is a YAML entry — no code change to add a language or domain |
 
 ---
 
@@ -65,8 +65,8 @@ Response (streaming SSE or blocking JSON)
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/VictorFu0717/pluse-rag.git
-cd pluse-rag
+git clone https://github.com/VictorFu0717/pulse-rag.git
+cd pulse-rag
 pip install -r requirements.txt
 ```
 
@@ -74,44 +74,100 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Fill in TAVILY_API_KEY, HUGGINGFACEHUB_API_TOKEN, etc.
+# Fill in HUGGINGFACEHUB_API_TOKEN (needed to download BGE models)
+# Add TAVILY_API_KEY if you want web search
 ```
 
-Edit `config/config.yaml` to set your LLM provider, knowledge bases, and tool settings.
-
-### 3. Build FAISS indices
+### 3. Build the index
 
 ```bash
 python scripts/build_index.py
+# Builds FAISS index from data/example_faq/ — takes a few minutes on first run
+# (downloads BAAI/bge-m3 embedding model ~1 GB)
 ```
-
-> Skip this step if you already have `faiss_index_*/` directories.
 
 ### 4. Start the server
 
 ```bash
 python main.py
-# → http://localhost:8002
-# → http://localhost:8002/docs  (Swagger UI)
+# → API: http://localhost:8002
+# → Docs: http://localhost:8002/docs
 ```
 
-### Docker (recommended for production)
+### Docker
 
 ```bash
+# Build index first (needs HuggingFace models)
+python scripts/build_index.py
+
+# Then run everything with Docker
 docker compose up --build
 ```
 
 ---
 
-## Configuration Guide
+## Customise for Your Company
 
-All configuration lives in **`config/config.yaml`**.  
-Edit this file — no code changes required.
+### Step 1 — Replace the example FAQ data
 
-### Switch LLM provider
+Put your `.txt` FAQ files under any directory (e.g. `data/my_faq/en/`).  
+Organise them into sub-folders by topic — each folder becomes a category.
+
+```
+data/my_faq/
+└── en/
+    ├── products/
+    │   └── catalog.txt
+    ├── billing/
+    │   └── payment_methods.txt
+    └── support/
+        └── troubleshooting.txt
+```
+
+### Step 2 — Update the config
+
+Edit `config/config.yaml`:
 
 ```yaml
-# Ollama (default)
+app:
+  name: "My Company AI Assistant"
+
+knowledge_bases:
+  - name: "english"
+    data_dir: "data/my_faq/en"          # ← point to your data
+    index_path: "faiss_index_en"
+    url_prefix: "https://help.mycompany.com/en"  # ← optional source links
+    tool_name: "retrieve_en"
+    tool_description: "Search the English knowledge base for customer questions"
+```
+
+### Step 3 — Customise the system prompt
+
+Edit `config/system_prompt.txt`.  
+Replace `[COMPANY_NAME]` with your company name and adjust the support contact details.
+
+### Step 4 — Rebuild the index
+
+```bash
+python scripts/build_index.py --kb english
+```
+
+### Step 5 — Start the server
+
+```bash
+python main.py
+```
+
+---
+
+## Configuration Reference
+
+All settings live in **`config/config.yaml`**.
+
+### LLM Provider
+
+```yaml
+# Ollama (default — free, local)
 llm:
   provider: "ollama"
   model: "qwen3.5:latest"
@@ -130,64 +186,64 @@ llm:
   api_key: "your-key"
 ```
 
-### Add a knowledge base
+### Multiple Knowledge Bases (multi-language)
 
 ```yaml
 knowledge_bases:
-  - name: "japanese"
-    index_path: "faiss_index_ja"
-    tool_name: "retrieve_ja"
-    tool_description: "日本語で質問する顧客に使うツール"
+  - name: "english"
+    data_dir: "data/faq/en"
+    index_path: "faiss_index_en"
+    tool_name: "retrieve_en"
+    tool_description: "Search English knowledge base"
+
+  - name: "traditional_chinese"
+    data_dir: "data/faq/zh-TW"
+    index_path: "faiss_index_zh_tw"
+    tool_name: "retrieve_zh_tw"
+    tool_description: "搜尋繁體中文知識庫"
 ```
 
-Then rebuild: `python scripts/build_index.py --kb japanese`
+### Adding a Custom Plugin Tool
 
-### Enable / disable plugins
+1. Create `plugins/my_tool.py`:
 
-```yaml
-tools:
-  web_search_enabled: true      # Tavily
-  domain_checker_enabled: true  # WhoisJSON
+```python
+from langchain_core.tools import tool
+
+def build_my_tool() -> list:
+    @tool
+    def my_tool(query: str) -> str:
+        "Description of what this tool does"
+        # your logic here
+        return "result"
+    return [my_tool]
 ```
 
----
-
-## Customising for Your Company
-
-1. **Replace the system prompt** — edit `config/system_prompt.txt`
-2. **Replace the FAQ data** — drop `.txt` files into `FAQ_data/` (see `data/README.md` for format)
-3. **Update category metadata** — edit `data/faq_categories.yaml`
-4. **Rebuild indices** — `python scripts/build_index.py`
-5. **Add custom tools** — create a file in `plugins/`, follow the pattern in `plugins/domain_checker.py`
+2. Register it in `core/server.py` (or extend `ToolsConfig` in `core/config.py`).
 
 ---
 
 ## API Reference
 
 ### `GET /health`
-
 ```json
 { "status": "ok", "models_loaded": true }
 ```
 
 ### `POST /query`
-
 ```json
 // Request
-{ "question": "How do I renew a domain?", "thread_id": "user-session-123" }
+{ "question": "How do I reset my password?", "thread_id": "user-session-42" }
 
 // Response
-{ "response": "You can renew your domain by..." }
+{ "response": "You can reset your password by..." }
 ```
 
 ### `POST /query-stream`
-
 Returns Server-Sent Events:
-
 ```
 data: {"token": "You"}
 data: {"token": " can"}
-data: {"token": " renew..."}
 data: [DONE]
 ```
 
@@ -196,37 +252,40 @@ data: [DONE]
 ## Project Structure
 
 ```
-pluse-rag/
+pulse-rag/
 ├── core/
-│   ├── config.py       # Pydantic settings models + YAML loader
-│   ├── agent.py        # LangGraph agent factory + trim_messages middleware
-│   ├── retrieval.py    # KnowledgeBase class + retrieval tool factory
-│   ├── reranker.py     # BGEReranker and BGEReranker_v2
-│   └── server.py       # FastAPI app factory
+│   ├── config.py        # Pydantic settings + YAML loader
+│   ├── agent.py         # LangGraph agent factory + trim_messages middleware
+│   ├── retrieval.py     # KnowledgeBase + retrieval tool factory
+│   ├── reranker.py      # BGEReranker and BGEReranker_v2 (LayerWise)
+│   └── server.py        # FastAPI app factory
 │
 ├── plugins/
-│   ├── domain_checker.py   # check_domain_available, check_domains_bulk
-│   └── web_search.py       # net_search (Tavily)
+│   ├── domain_checker.py    # check_domain_available, check_domains_bulk
+│   └── web_search.py        # net_search (Tavily)
 │
 ├── config/
-│   ├── config.yaml         # ← main configuration file
-│   └── system_prompt.txt   # ← LLM system prompt
+│   ├── config.yaml          # ← main configuration (edit this)
+│   └── system_prompt.txt    # ← LLM system prompt (edit this)
 │
 ├── data/
-│   ├── faq_categories.yaml # category metadata for index building
-│   └── README.md           # data format guide
+│   ├── faq_categories.yaml  # category metadata for index building
+│   ├── README.md            # data format guide
+│   └── example_faq/         # sample FAQ for AcmeTech (replace with your data)
+│       └── en/
+│           ├── products/
+│           ├── billing/
+│           ├── support/
+│           └── account/
 │
 ├── scripts/
-│   └── build_index.py      # build FAISS indices from FAQ files
+│   └── build_index.py   # build FAISS indices from your FAQ files
 │
 ├── tests/
-│   ├── test_retrieval.py   # unit tests (no GPU required)
-│   └── test_api.py         # API integration tests (mocked)
+│   ├── test_retrieval.py    # unit tests (no GPU required)
+│   └── test_api.py          # API integration tests (mocked)
 │
-├── FAQ_data/               # raw FAQ text files (zh-TW / zh-CN / en)
-├── faiss_index_*/          # pre-built FAISS indices
-│
-├── main.py                 # entry point
+├── main.py              # entry point
 ├── docker-compose.yml
 ├── Dockerfile
 └── .env.example
@@ -252,11 +311,10 @@ Tests run without GPU — all heavy models are mocked.
 | Agent framework | LangGraph 1.x + LangChain 1.x |
 | Vector store | FAISS (cosine similarity) |
 | Embeddings | `BAAI/bge-m3` (multilingual) |
-| Reranker | `BAAI/bge-reranker-v2-minicpm-layerwise` |
-| LLM | Ollama (Qwen) / OpenAI compatible |
+| Reranker | `BAAI/bge-reranker-v2-minicpm-layerwise` (LayerWise) |
+| LLM | Ollama / OpenAI / any OpenAI-compatible |
 | API server | FastAPI + uvicorn |
 | Web search | Tavily |
-| Domain check | WhoisJSON API + python-whois fallback |
 
 ---
 

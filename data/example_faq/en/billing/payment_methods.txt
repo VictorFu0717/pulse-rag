@@ -1,0 +1,18 @@
+Accepted Payment Methods
+
+Credit / Debit Cards:
+- Visa, Mastercard, American Express
+- Cards are charged automatically on your billing date
+
+PayPal:
+- Link your PayPal account in Billing > Payment Methods
+
+Bank Transfer:
+- Available for annual plans over $500
+- Contact billing@acmetech.example.com for wire details
+
+Cryptocurrency:
+- Bitcoin (BTC) and Ethereum (ETH) accepted
+- Requires a 12-month prepayment
+
+All transactions are processed securely. AcmeTech does not store full card numbers.

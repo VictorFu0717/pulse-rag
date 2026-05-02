@@ -1,0 +1,24 @@
+Pricing Plans
+
+Starter — $9/month
+- 10 GB SSD storage
+- 1 CPU core, 1 GB RAM
+- 1 website, 5 email accounts
+- Free SSL certificate
+
+Business — $29/month
+- 50 GB SSD storage
+- 2 CPU cores, 4 GB RAM
+- Unlimited websites
+- Unlimited email accounts
+- Priority support
+
+Enterprise — $149/month
+- 500 GB SSD storage
+- 8 CPU cores, 32 GB RAM
+- Dedicated IP
+- Custom SLA
+- Dedicated account manager
+
+Annual billing receives a 20% discount on all plans.
+Prices are in USD and exclude applicable taxes.

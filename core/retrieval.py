@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import time
+from pathlib import Path
 from typing import List, Tuple
 
 from langchain_community.vectorstores import FAISS
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class KnowledgeBase:
-    """Wraps a FAISS index + BGE reranker for one language / domain."""
+    """Wraps a FAISS index + BGE reranker for one knowledge base."""
 
     def __init__(
         self,
@@ -68,10 +69,22 @@ class KnowledgeBase:
 
 
 def build_retrieval_tools(settings: Settings, embeddings, reranker: BGEReranker_v2) -> list:
-    """Return one @tool per knowledge base defined in config."""
+    """Return one @tool per knowledge base defined in config.
+
+    Knowledge bases whose index_path doesn't exist are skipped with a warning
+    instead of crashing — useful when running before the first index build.
+    """
     tools = []
 
     for kb_cfg in settings.knowledge_bases:
+        if not Path(kb_cfg.index_path).exists():
+            logger.warning(
+                "Index not found for '%s' (%s). "
+                "Run `python scripts/build_index.py` to build it.",
+                kb_cfg.name, kb_cfg.index_path,
+            )
+            continue
+
         kb = KnowledgeBase(
             cfg=kb_cfg,
             embeddings=embeddings,

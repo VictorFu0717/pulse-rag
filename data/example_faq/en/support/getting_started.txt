@@ -1,0 +1,25 @@
+Getting Started with AcmeTech
+
+Step 1 — Create your account
+  Visit acmetech.example.com/signup, enter your email, and choose a password.
+
+Step 2 — Choose a plan
+  Select Starter, Business, or Enterprise. You can upgrade at any time.
+
+Step 3 — Set up your domain
+  In the control panel go to Domains → Add Domain. Point your DNS to our nameservers:
+    ns1.acmetech.example.com
+    ns2.acmetech.example.com
+  DNS propagation takes up to 48 hours.
+
+Step 4 — Deploy your website
+  Use the one-click installer for WordPress, Joomla, or other CMS platforms,
+  or upload files via FTP / SFTP.
+
+Step 5 — Set up email
+  Go to Email → Create Mailbox. Enter the mailbox name and a password.
+  Configure your mail client using the settings at:
+    IMAP: mail.acmetech.example.com:993 (SSL)
+    SMTP: mail.acmetech.example.com:587 (STARTTLS)
+
+For video tutorials visit: help.acmetech.example.com/getting-started

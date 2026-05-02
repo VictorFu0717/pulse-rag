@@ -1,0 +1,20 @@
+Managing Your Subscription
+
+Upgrade:
+- Log in → Billing → Change Plan → select a higher tier
+- Upgrade takes effect immediately; you are charged a prorated amount
+
+Downgrade:
+- Log in → Billing → Change Plan → select a lower tier
+- Downgrade takes effect at the end of your current billing period
+- No refund is issued for the unused portion
+
+Cancel:
+- Log in → Billing → Cancel Subscription
+- Service continues until the end of the paid period
+- All data is deleted 30 days after cancellation
+- Export your data before cancelling (Settings → Export Data)
+
+Pause (Business and Enterprise only):
+- Suspend your account for up to 3 months at 10% of your plan cost
+- Contact your account manager or billing@acmetech.example.com

@@ -1,0 +1,17 @@
+Invoice & Billing FAQ
+
+Q: Where can I download my invoices?
+A: Log in → Billing → Invoice History. Invoices are available as PDF.
+
+Q: Can I change the billing name or VAT number on my invoices?
+A: Yes. Go to Billing → Company Details and update your information.
+   Note: Changes apply to future invoices only. Past invoices cannot be re-issued.
+
+Q: Why was I charged twice this month?
+A: This can happen if you upgraded mid-cycle. You are charged a prorated amount
+   for the upgraded plan immediately, then the full amount on your next billing date.
+   Contact support@acmetech.example.com if you believe it is an error.
+
+Q: How do I get a refund?
+A: AcmeTech offers a 30-day money-back guarantee for new subscriptions.
+   Submit a refund request at support@acmetech.example.com within 30 days of purchase.

@@ -1,16 +1,14 @@
 version: "3.9"
 
 services:
-  pluse-rag:
+  pulse-rag:
     build: .
     ports:
       - "8002:8002"
     env_file:
       - .env
     volumes:
-      - ./faiss_index_tra_chi:/app/faiss_index_tra_chi:ro
-      - ./faiss_index_sim_chi:/app/faiss_index_sim_chi:ro
-      - ./faiss_index_en:/app/faiss_index_en:ro
+      - ./faiss_index_en:/app/faiss_index_en:ro   # add one line per knowledge base
       - ./logs:/app/logs
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434

@@ -1,161 +1,152 @@
-"""Build FAISS vector indices from FAQ text files.
+"""Build FAISS vector indices from your FAQ text files.
+
+How it works
+------------
+For each knowledge base defined in config/config.yaml:
+  1. Reads all .txt files under data_dir recursively
+  2. Uses the immediate parent folder name as the document category
+  3. Looks up category metadata in data/faq_categories.yaml (optional)
+  4. Builds a FAISS index and saves it to index_path
+
+Data directory layout (any depth works):
+    data/my_faq/
+    ├── products/
+    │   ├── service_overview.txt
+    │   └── pricing.txt
+    ├── billing/
+    │   └── payment_methods.txt
+    └── support/
+        └── troubleshooting.txt
 
 Usage
 -----
-    python scripts/build_index.py                      # build all knowledge bases
-    python scripts/build_index.py --kb traditional_chinese  # build one
-    python scripts/build_index.py --skip-services      # skip web-page scraping
+    python scripts/build_index.py                    # build all KBs
+    python scripts/build_index.py --kb english       # build one KB by name
+    python scripts/build_index.py --config custom.yaml
+    python scripts/build_index.py --categories data/my_categories.yaml
 """
 from __future__ import annotations
 
 import argparse
-import glob
-import os
-import re
 import sys
 from pathlib import Path
 
 import yaml
-from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.vectorstores.utils import DistanceStrategy
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from core.config import load_settings
-
-_HEADERS = {
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "zh-TW,zh;q=0.9",
-    "Referer": "https://www.google.com/",
-}
-
-# Maps knowledge-base index_path suffix → (faq_dir, url_prefix, service_lang_prefix)
-_LANG_MAP = {
-    "tra_chi": ("FAQ_data/url_txt_tra_chi", "https://www.net-chinese.com.tw/faq", ""),
-    "sim_chi": ("FAQ_data/url_txt_sim_chi", "https://www.net-chinese.com.tw/cn/faq", "cn"),
-    "en":      ("FAQ_data/url_txt_en",      "https://www.net-chinese.com.tw/en/faq", "en"),
-}
+from core.config import KnowledgeBaseConfig, load_settings
 
 
-def load_categories(path: str = "data/faq_categories.yaml") -> dict:
-    with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+def load_categories(path: str) -> dict:
+    p = Path(path)
+    if not p.exists():
+        return {}
+    with open(p, encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+    return data.get("categories", {})
 
 
-def _build_faq_docs(data_dir: str, categories: dict, url_prefix: str) -> list[Document]:
+def _source_url(cfg: KnowledgeBaseConfig, category: str, stem: str) -> str | None:
+    """Build a source URL from url_prefix + category + filename (all optional)."""
+    if not cfg.url_prefix:
+        return None
+    prefix = cfg.url_prefix.rstrip("/")
+    return f"{prefix}/{category}/{stem}"
+
+
+def build_docs(cfg: KnowledgeBaseConfig, categories: dict) -> list[Document]:
+    data_dir = Path(cfg.data_dir)
+    if not data_dir.exists():
+        print(f"  ⚠ data_dir not found: {data_dir}")
+        return []
+
     docs = []
-    for filepath in glob.glob(f"{data_dir}/*/*/*.txt"):
-        label_name = Path(filepath).parent.name
-        filename = Path(filepath).stem
+    txt_files = sorted(data_dir.rglob("*.txt"))
+    if not txt_files:
+        print(f"  ⚠ No .txt files found in {data_dir}")
+        return []
 
-        if label_name not in categories.get("categories", {}):
-            print(f"  ⚠ Unknown category '{label_name}', skipping {filepath}")
-            continue
+    for filepath in txt_files:
+        category = filepath.parent.name
+        stem = filepath.stem
 
         with open(filepath, encoding="utf-8") as f:
-            content = f.read()
+            content = f.read().strip()
 
-        anchor = None
-        m = re.search(r"__anchor_(.+)$", filename)
-        if m:
-            anchor = m.group(1)
+        if not content:
+            continue
+
+        # Metadata: prefer categories.yaml entry; fall back to folder name
+        if category in categories:
+            meta = dict(categories[category])
         else:
-            m2 = re.search(r"ANCHOR:(\w+)", content)
-            if m2:
-                anchor = m2.group(1)
+            meta = {"group": category, "label": category, "description": ""}
 
-        clean_content = re.sub(r"^ANCHOR:.*\n?", "", content)
-        meta = categories["categories"][label_name].copy()
-        clean_fn = filename.replace(f"__anchor_{anchor or ''}", "").replace("index", "")
+        meta["source"] = _source_url(cfg, category, stem)
+        meta["file"] = str(filepath.relative_to(Path(".")))
 
-        if meta.get("group") == "else":
-            source = None
-        else:
-            source = f"{url_prefix}/{meta['group']}/{label_name}/{clean_fn}"
-            if anchor:
-                source += f"#{anchor}"
-        meta["source"] = source
+        # Prepend category context so the embedding captures the topic
+        label = meta.get("label", category)
+        description = meta.get("description", "")
+        header = f"[Category: {label}]"
+        if description:
+            header += f"\n[Description: {description}]"
 
-        full_text = (
-            f"[主題標籤: {meta.get('label')}]\n"
-            f"[說明: {meta.get('description')}]\n\n"
-            f"{clean_content}"
-        )
+        full_text = f"{header}\n\n{content}"
         docs.append(Document(page_content=full_text, metadata=meta))
-    return docs
 
-
-def _build_service_docs(services: dict, lang_prefix: str, base_domain: str) -> list[Document]:
-    docs = []
-    for key, item in services.items():
-        url = item["url"]
-        if base_domain in url and "HtmlSiteInfoList" not in url and lang_prefix:
-            path_part = url.split(base_domain)[-1]
-            url = f"{base_domain}/{lang_prefix}{path_part}"
-        print(f"  Scraping: {url}")
-        try:
-            content = WebBaseLoader(url, header_template=_HEADERS).load()
-            meta = {**item, "source": url}
-            full_text = (
-                f"[主題標籤: {meta.get('label')}]\n"
-                f"[說明: {meta.get('description')}]\n\n"
-                f"{content}"
-            )
-            docs.append(Document(page_content=full_text, metadata=meta))
-        except Exception as e:
-            print(f"  ⚠ Failed to load {url}: {e}")
     return docs
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build FAISS indices for Pluse RAG")
-    parser.add_argument("--config", default="config/config.yaml")
-    parser.add_argument("--categories", default="data/faq_categories.yaml")
-    parser.add_argument("--kb", default=None, help="Build only this knowledge base (by name)")
-    parser.add_argument("--skip-services", action="store_true", help="Skip web-page scraping")
+    parser.add_argument("--config", default="config/config.yaml", help="Path to config.yaml")
+    parser.add_argument("--categories", default="data/faq_categories.yaml",
+                        help="Path to faq_categories.yaml (optional)")
+    parser.add_argument("--kb", default=None,
+                        help="Build only this knowledge base (by name). Builds all if omitted.")
     args = parser.parse_args()
 
     settings = load_settings(args.config)
     categories = load_categories(args.categories)
 
+    kbs_to_build = [
+        kb for kb in settings.knowledge_bases
+        if args.kb is None or kb.name == args.kb
+    ]
+
+    if not kbs_to_build:
+        print(f"No matching knowledge bases found. Available: "
+              f"{[kb.name for kb in settings.knowledge_bases]}")
+        sys.exit(1)
+
     print("Loading embedding model…")
     embedding = HuggingFaceEmbeddings(model_name=settings.embeddings.model)
 
-    for kb in settings.knowledge_bases:
-        if args.kb and kb.name != args.kb:
-            continue
-
-        # Resolve lang dir from index_path suffix
-        lang_key = next(
-            (k for k in _LANG_MAP if kb.index_path.endswith(k)), None
-        )
-        if not lang_key:
-            print(f"\n⚠ Cannot map '{kb.index_path}' to a language dir — skipping")
-            continue
-
-        data_dir, url_prefix, svc_lang = _LANG_MAP[lang_key]
+    for kb in kbs_to_build:
         print(f"\n{'='*60}")
-        print(f"Building: {kb.name}  →  {kb.index_path}")
+        print(f"Building: {kb.name}")
 
-        docs = _build_faq_docs(data_dir, categories, url_prefix)
-        print(f"  FAQ docs: {len(docs)}")
+        if not kb.data_dir:
+            print("  ⚠ No data_dir set in config — skipping")
+            continue
 
-        if not args.skip_services and "services" in categories:
-            svc_docs = _build_service_docs(
-                categories["services"], svc_lang, "https://www.net-chinese.com.tw"
-            )
-            docs.extend(svc_docs)
-            print(f"  Service docs: {len(svc_docs)}")
+        docs = build_docs(kb, categories)
+        if not docs:
+            print("  ⚠ No documents found — skipping")
+            continue
 
-        print(f"  Building FAISS index ({len(docs)} total docs)…")
+        print(f"  Documents: {len(docs)}")
+        print(f"  Building FAISS index…")
         vectorstore = FAISS.from_documents(
             docs, embedding, distance_strategy=DistanceStrategy.COSINE
         )
         vectorstore.save_local(kb.index_path)
-        print(f"  ✅ Saved → {kb.index_path}")
+        print(f"  ✅ Saved → {kb.index_path}/")
 
 
 if __name__ == "__main__":

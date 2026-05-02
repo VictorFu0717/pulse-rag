@@ -1,0 +1,15 @@
+AcmeTech offers three core cloud services:
+
+1. **AcmeHost** — Managed cloud hosting with 99.9% uptime SLA.
+   - Shared plans starting at $9/month
+   - VPS plans starting at $29/month
+   - Dedicated servers starting at $149/month
+
+2. **AcmeMail** — Business email hosting with spam protection and 50 GB per mailbox.
+   - Supports custom domains (e.g., you@yourcompany.com)
+
+3. **AcmeSafe** — Automated daily backups and disaster recovery.
+   - Retention: 30 days
+   - One-click restore from the control panel
+
+All services include 24/7 technical support and a 30-day money-back guarantee.
