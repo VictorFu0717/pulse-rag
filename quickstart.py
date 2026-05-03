@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Interactive setup wizard for Pulse RAG.
 
-Usage:  python setup.py
+Usage:  python quickstart.py
 """
 from __future__ import annotations
 
