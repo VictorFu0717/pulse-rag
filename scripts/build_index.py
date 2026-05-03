@@ -102,10 +102,14 @@ def build_docs(cfg: KnowledgeBaseConfig, categories: dict) -> list[Document]:
     return docs
 
 
+_PROJECT_ROOT = Path(__file__).parent.parent
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build FAISS indices for Pluse RAG")
-    parser.add_argument("--config", default="config/config.yaml", help="Path to config.yaml")
-    parser.add_argument("--categories", default="data/faq_categories.yaml",
+    parser = argparse.ArgumentParser(description="Build FAISS indices for Pulse RAG")
+    parser.add_argument("--config", default=str(_PROJECT_ROOT / "config/config.yaml"),
+                        help="Path to config.yaml")
+    parser.add_argument("--categories", default=str(_PROJECT_ROOT / "data/faq_categories.yaml"),
                         help="Path to faq_categories.yaml (optional)")
     parser.add_argument("--kb", default=None,
                         help="Build only this knowledge base (by name). Builds all if omitted.")
