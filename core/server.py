@@ -82,6 +82,7 @@ def create_app(settings: Settings) -> FastAPI:
     from core.retrieval import build_retrieval_tools
     from core.agent import build_agent
 
+    # Heavy models loaded once — never reloaded
     llm = _build_llm(settings)
     embeddings = HuggingFaceEmbeddings(model_name=settings.embeddings.model)
     reranker = BGEReranker_v2(
@@ -91,33 +92,56 @@ def create_app(settings: Settings) -> FastAPI:
         batch_size=settings.reranker.batch_size,
     )
 
-    tools = build_retrieval_tools(settings, embeddings, reranker)
+    # Mutable container — swapped by /admin/reload without restarting
+    state: dict = {}
 
-    disabled = set(settings.tools.disabled_plugins)
-    for _, name, _ in pkgutil.iter_modules(_plugins_pkg.__path__):
-        if name in disabled:
-            logger.info("Plugin %r disabled — skipping", name)
-            continue
-        try:
-            module = importlib.import_module(f"plugins.{name}")
-            for attr_name in dir(module):
-                if not attr_name.startswith("build_"):
-                    continue
-                attr = getattr(module, attr_name)
-                if callable(attr):
-                    result = attr()
-                    if isinstance(result, list):
-                        tools.extend(result)
-                    elif result is not None:
-                        tools.append(result)
-            logger.info("Plugin %r loaded", name)
-        except Exception as e:
-            logger.warning("Plugin %r skipped: %s", name, e)
+    def _reload(new_settings: Settings, force_reload: bool = False) -> dict:
+        retrieval_tools = build_retrieval_tools(new_settings, embeddings, reranker)
+        plugin_tools: list = []
+        loaded_plugins: list[str] = []
+        skipped_plugins: list[str] = []
 
-    prompt_path = Path(settings.system_prompt_path)
-    system_prompt = prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else ""
+        disabled = set(new_settings.tools.disabled_plugins)
+        for _, name, _ in pkgutil.iter_modules(_plugins_pkg.__path__):
+            if name in disabled:
+                skipped_plugins.append(name)
+                continue
+            try:
+                module = importlib.import_module(f"plugins.{name}")
+                if force_reload:
+                    importlib.reload(module)
+                for attr_name in dir(module):
+                    if not attr_name.startswith("build_"):
+                        continue
+                    attr = getattr(module, attr_name)
+                    if callable(attr):
+                        result = attr()
+                        if isinstance(result, list):
+                            plugin_tools.extend(result)
+                        elif result is not None:
+                            plugin_tools.append(result)
+                loaded_plugins.append(name)
+                logger.info("Plugin %r loaded", name)
+            except Exception as exc:
+                skipped_plugins.append(name)
+                logger.warning("Plugin %r skipped: %s", name, exc)
 
-    agent = build_agent(settings, llm, tools, system_prompt)
+        all_tools = retrieval_tools + plugin_tools
+        prompt_path = Path(new_settings.system_prompt_path)
+        system_prompt = prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else ""
+
+        state["agent"] = build_agent(new_settings, llm, all_tools, system_prompt)
+        state["settings"] = new_settings
+        logger.info("Agent ready — %d tools loaded", len(all_tools))
+
+        return {
+            "tools": [t.name for t in all_tools],
+            "plugins_loaded": loaded_plugins,
+            "plugins_skipped": skipped_plugins,
+            "system_prompt_path": str(prompt_path),
+        }
+
+    _reload(settings)
 
     app = FastAPI(
         title=settings.app.name,
@@ -143,8 +167,21 @@ def create_app(settings: Settings) -> FastAPI:
     async def health():
         return {"status": "ok", "models_loaded": True}
 
+    @app.post("/admin/reload")
+    async def admin_reload():
+        from core.config import load_settings as _load
+        try:
+            new_settings = _load()
+            summary = _reload(new_settings, force_reload=True)
+            logger.info("Admin reload complete")
+            return {"status": "ok", **summary}
+        except Exception as exc:
+            logger.error("Admin reload failed: %s", exc, exc_info=True)
+            return {"status": "error", "message": str(exc)}
+
     @app.post("/query")
     async def query(request: QueryRequest):
+        agent = state["agent"]
         cfg = {"configurable": {"thread_id": request.thread_id}}
         t0 = time.time()
         try:
@@ -161,12 +198,13 @@ def create_app(settings: Settings) -> FastAPI:
                 request.thread_id, time.time() - t0, response,
             )
             return {"response": response}
-        except Exception as e:
-            logger.error("Error | thread=%s | %s", request.thread_id, e, exc_info=True)
+        except Exception as exc:
+            logger.error("Error | thread=%s | %s", request.thread_id, exc, exc_info=True)
             return {"response": "系統發生錯誤，請稍後再試"}
 
     @app.post("/query-stream")
     async def query_stream(request: QueryRequest):
+        agent = state["agent"]
         cfg = {"configurable": {"thread_id": request.thread_id}}
 
         async def event_generator():
@@ -184,8 +222,8 @@ def create_app(settings: Settings) -> FastAPI:
                     if chunk and chunk.content and not getattr(chunk, "tool_call_chunks", None):
                         yield f"data: {json.dumps({'token': chunk.content}, ensure_ascii=False)}\n\n"
                 yield "data: [DONE]\n\n"
-            except Exception as e:
-                logger.error("Stream error | %s | %s", request.thread_id, e, exc_info=True)
+            except Exception as exc:
+                logger.error("Stream error | %s | %s", request.thread_id, exc, exc_info=True)
                 yield f"data: {json.dumps({'error': '系統發生錯誤，請稍後再試'}, ensure_ascii=False)}\n\n"
                 yield "data: [DONE]\n\n"
 
