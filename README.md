@@ -19,7 +19,10 @@ Drop in your FAQ documents, set your company name and LLM, and have a production
 - **Config-driven** — swap LLM provider, embedding model, add knowledge bases — no code changes needed
 - **Multi-language** — one knowledge base per language, each becomes its own agent tool
 - **Streaming** — Server-Sent Events for real-time token output
+- **Built-in Chat UI** — open `http://localhost:8002` in a browser to start chatting immediately
 - **Plugin tools** — web search (Tavily) and domain availability check; add your own in `plugins/`
+- **Auto-discovery** — drop a file in `plugins/` and it loads on next start (or on `/admin/reload`)
+- **Hot reload** — update config, plugins, or system prompt without restarting the server
 - **Conversation memory** — LangGraph InMemorySaver with smart message trimming
 
 ---
@@ -30,7 +33,7 @@ Drop in your FAQ documents, set your company name and LLM, and have a production
 User Query
     │
     ▼
-FastAPI  (/query · /query-stream · /health)
+FastAPI  (GET / · POST /query · POST /query-stream · POST /admin/reload · GET /health)
     │
     ▼
 LangGraph Agent  ← trim_messages middleware (sliding window)
@@ -38,7 +41,7 @@ LangGraph Agent  ← trim_messages middleware (sliding window)
     ├─► retrieve_en  ──► FAISS index ──► BGE Reranker ──► top-k docs
     ├─► retrieve_*   ──► (add more knowledge bases in config.yaml)
     ├─► net_search   ──► Tavily Web Search
-    └─► (your custom plugins)
+    └─► (your custom plugins — auto-loaded from plugins/)
     │
     ▼
 LLM  (Ollama · OpenAI · any OpenAI-compatible endpoint)
@@ -57,6 +60,7 @@ Response  (streaming SSE or blocking JSON)
 | **Streaming SSE** | Simpler client than WebSocket; stateless per-request |
 | **trim_messages middleware** | Prevents orphaned ToolMessages from causing blank responses on context overflow |
 | **Config-driven KBs** | Each knowledge base is a YAML entry — no code change to add a language or domain |
+| **Plugin auto-discovery** | Drop a file in `plugins/` — no registration required |
 
 ---
 
@@ -70,28 +74,26 @@ cd pulse-rag
 pip install -r requirements.txt
 ```
 
-### 2. Configure
+### 2. Run the setup wizard
 
 ```bash
-cp .env.example .env
-# Fill in HUGGINGFACEHUB_API_TOKEN (needed to download BGE models)
-# Add TAVILY_API_KEY if you want web search
+python setup.py
 ```
 
-### 3. Build the index
+The wizard walks you through:
+- LLM provider (Ollama / OpenAI / custom)
+- API keys (Tavily, HuggingFace, OpenAI)
+- Knowledge base configuration
+- System prompt
+- Writes `config/config.yaml` and `.env` automatically
+- Optionally builds the FAISS index at the end
 
-```bash
-python scripts/build_index.py
-# Builds FAISS index from data/example_faq/ — takes a few minutes on first run
-# (downloads BAAI/bge-m3 embedding model ~1 GB)
-```
-
-### 4. Start the server
+### 3. Start the server
 
 ```bash
 python main.py
-# → API: http://localhost:8002
-# → Docs: http://localhost:8002/docs
+# → Chat UI:  http://localhost:8002
+# → API docs: http://localhost:8002/docs
 ```
 
 ### Docker
@@ -108,7 +110,7 @@ docker compose up --build
 
 ## Customise for Your Company
 
-### Step 1 — Replace the example FAQ data
+### Replace the FAQ data
 
 Put your `.txt` FAQ files under any directory (e.g. `data/my_faq/en/`).  
 Organise them into sub-folders by topic — each folder becomes a category.
@@ -124,7 +126,7 @@ data/my_faq/
         └── troubleshooting.txt
 ```
 
-### Step 2 — Update the config
+### Update the config
 
 Edit `config/config.yaml`:
 
@@ -134,29 +136,32 @@ app:
 
 knowledge_bases:
   - name: "english"
-    data_dir: "data/my_faq/en"          # ← point to your data
+    data_dir: "data/my_faq/en"
     index_path: "faiss_index_en"
-    url_prefix: "https://help.mycompany.com/en"  # ← optional source links
+    url_prefix: "https://help.mycompany.com/en"   # optional source links
     tool_name: "retrieve_en"
     tool_description: "Search the English knowledge base for customer questions"
 ```
 
-### Step 3 — Customise the system prompt
+### Customise the system prompt
 
-Edit `config/system_prompt.txt`.  
-Replace `[COMPANY_NAME]` with your company name and adjust the support contact details.
+Edit `config/system_prompt.txt`.
 
-### Step 4 — Rebuild the index
+### Rebuild the index
 
 ```bash
 python scripts/build_index.py --kb english
 ```
 
-### Step 5 — Start the server
+### Reload without restarting
+
+After changing config, plugins, or the system prompt:
 
 ```bash
-python main.py
+curl -X POST http://localhost:8002/admin/reload
 ```
+
+Returns a summary of loaded tools and plugins.
 
 ---
 
@@ -170,7 +175,7 @@ All settings live in **`config/config.yaml`**.
 # Ollama (default — free, local)
 llm:
   provider: "ollama"
-  model: "qwen3.5:latest"
+  model: "qwen3:8b"
   base_url: "http://localhost:11434"
 
 # OpenAI
@@ -203,27 +208,43 @@ knowledge_bases:
     tool_description: "搜尋繁體中文知識庫"
 ```
 
-### Adding a Custom Plugin Tool
+### Plugins
 
-1. Create `plugins/my_tool.py`:
+All files in `plugins/` are loaded automatically on startup.  
+To disable a plugin without deleting it:
+
+```yaml
+tools:
+  disabled_plugins: ["domain_checker"]   # filenames without .py
+```
+
+---
+
+## Adding a Custom Plugin Tool
+
+Only **one step** — create a file in `plugins/`:
 
 ```python
+# plugins/my_tool.py
 from langchain_core.tools import tool
 
 def build_my_tool() -> list:
     @tool
     def my_tool(query: str) -> str:
-        "Description of what this tool does"
-        # your logic here
+        """Describe when the agent should call this tool and what it returns."""
         return "result"
     return [my_tool]
 ```
 
-2. Register it in `core/server.py` (or extend `ToolsConfig` in `core/config.py`).
+The system detects and loads it on the next startup or `/admin/reload` call.  
+No changes to `server.py` or `config.py` required.
 
 ---
 
 ## API Reference
+
+### `GET /`
+Opens the built-in chat UI in the browser.
 
 ### `GET /health`
 ```json
@@ -247,6 +268,21 @@ data: {"token": " can"}
 data: [DONE]
 ```
 
+### `POST /admin/reload`
+Reloads config, plugins, and system prompt without restarting the server.  
+The embedding model and reranker are **not** reloaded (they stay in memory).
+
+```json
+// Response
+{
+  "status": "ok",
+  "tools": ["retrieve_en", "net_search"],
+  "plugins_loaded": ["web_search"],
+  "plugins_skipped": ["domain_checker"],
+  "system_prompt_path": "config/system_prompt.txt"
+}
+```
+
 ---
 
 ## Project Structure
@@ -257,12 +293,15 @@ pulse-rag/
 │   ├── config.py        # Pydantic settings + YAML loader
 │   ├── agent.py         # LangGraph agent factory + trim_messages middleware
 │   ├── retrieval.py     # KnowledgeBase + retrieval tool factory
-│   ├── reranker.py      # BGEReranker and BGEReranker_v2 (LayerWise)
-│   └── server.py        # FastAPI app factory
+│   ├── reranker.py      # BGEReranker_v2 (LayerWise)
+│   └── server.py        # FastAPI app factory + hot-reload logic
 │
-├── plugins/
+├── plugins/             # Drop a file here to add a tool — auto-discovered
 │   ├── domain_checker.py    # check_domain_available, check_domains_bulk
 │   └── web_search.py        # net_search (Tavily)
+│
+├── static/
+│   └── index.html       # Built-in chat UI (served at GET /)
 │
 ├── config/
 │   ├── config.yaml          # ← main configuration (edit this)
@@ -270,7 +309,6 @@ pulse-rag/
 │
 ├── data/
 │   ├── faq_categories.yaml  # category metadata for index building
-│   ├── README.md            # data format guide
 │   └── example_faq/         # sample FAQ for AcmeTech (replace with your data)
 │       └── en/
 │           ├── products/
@@ -285,6 +323,7 @@ pulse-rag/
 │   ├── test_retrieval.py    # unit tests (no GPU required)
 │   └── test_api.py          # API integration tests (mocked)
 │
+├── setup.py             # interactive setup wizard
 ├── main.py              # entry point
 ├── docker-compose.yml
 ├── Dockerfile
