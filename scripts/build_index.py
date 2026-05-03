@@ -60,6 +60,8 @@ def _source_url(cfg: KnowledgeBaseConfig, category: str, stem: str) -> str | Non
 
 def build_docs(cfg: KnowledgeBaseConfig, categories: dict) -> list[Document]:
     data_dir = Path(cfg.data_dir)
+    if not data_dir.is_absolute():
+        data_dir = _PROJECT_ROOT / data_dir
     if not data_dir.exists():
         print(f"  ⚠ data_dir not found: {data_dir}")
         return []
@@ -87,7 +89,7 @@ def build_docs(cfg: KnowledgeBaseConfig, categories: dict) -> list[Document]:
             meta = {"group": category, "label": category, "description": ""}
 
         meta["source"] = _source_url(cfg, category, stem)
-        meta["file"] = str(filepath.relative_to(Path(".")))
+        meta["file"] = str(filepath.relative_to(_PROJECT_ROOT))
 
         # Prepend category context so the embedding captures the topic
         label = meta.get("label", category)
@@ -149,7 +151,10 @@ def main() -> None:
         vectorstore = FAISS.from_documents(
             docs, embedding, distance_strategy=DistanceStrategy.COSINE
         )
-        vectorstore.save_local(kb.index_path)
+        index_path = Path(kb.index_path)
+        if not index_path.is_absolute():
+            index_path = _PROJECT_ROOT / index_path
+        vectorstore.save_local(str(index_path))
         print(f"  ✅ Saved → {kb.index_path}/")
 
 
