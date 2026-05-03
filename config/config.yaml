@@ -76,9 +76,10 @@ knowledge_bases:
   #     Search the Traditional Chinese knowledge base for customer questions.
 
 # ── Plugins ───────────────────────────────────────────────────────────────────
+# All files in plugins/ are loaded automatically.
+# To disable a plugin, add its filename (without .py) to the list below.
 tools:
-  web_search_enabled: true       # requires TAVILY_API_KEY in .env
-  domain_checker_enabled: false  # enable if your service involves domain names
+  disabled_plugins: ["domain_checker"]  # e.g. ["web_search", "domain_checker"]
 
 # ── Memory ────────────────────────────────────────────────────────────────────
 memory:

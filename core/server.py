@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import importlib
 import json
 import logging
 import os
+import pkgutil
 import time
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
+import plugins as _plugins_pkg
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -90,13 +93,26 @@ def create_app(settings: Settings) -> FastAPI:
 
     tools = build_retrieval_tools(settings, embeddings, reranker)
 
-    if settings.tools.web_search_enabled:
-        from plugins.web_search import build_web_search_tool
-        tools.append(build_web_search_tool())
-
-    if settings.tools.domain_checker_enabled:
-        from plugins.domain_checker import build_domain_tools
-        tools.extend(build_domain_tools())
+    disabled = set(settings.tools.disabled_plugins)
+    for _, name, _ in pkgutil.iter_modules(_plugins_pkg.__path__):
+        if name in disabled:
+            logger.info("Plugin %r disabled — skipping", name)
+            continue
+        try:
+            module = importlib.import_module(f"plugins.{name}")
+            for attr_name in dir(module):
+                if not attr_name.startswith("build_"):
+                    continue
+                attr = getattr(module, attr_name)
+                if callable(attr):
+                    result = attr()
+                    if isinstance(result, list):
+                        tools.extend(result)
+                    elif result is not None:
+                        tools.append(result)
+            logger.info("Plugin %r loaded", name)
+        except Exception as e:
+            logger.warning("Plugin %r skipped: %s", name, e)
 
     prompt_path = Path(settings.system_prompt_path)
     system_prompt = prompt_path.read_text(encoding="utf-8") if prompt_path.exists() else ""

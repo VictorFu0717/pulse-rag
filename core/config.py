@@ -51,8 +51,7 @@ class KnowledgeBaseConfig(BaseModel):
 
 
 class ToolsConfig(BaseModel):
-    web_search_enabled: bool = True
-    domain_checker_enabled: bool = False
+    disabled_plugins: List[str] = []
 
 
 class MemoryConfig(BaseModel):
