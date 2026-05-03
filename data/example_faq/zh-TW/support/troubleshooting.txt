@@ -1,0 +1,25 @@
+常見問題排解
+
+網站顯示「Error 500」：
+- 在控制台查看錯誤記錄：控制台 → 記錄 → 錯誤記錄
+- 常見原因：PHP 版本不符、.htaccess 損壞、記憶體超出限制
+- 增加 PHP 記憶體限制：在 .htaccess 中加入 "php_value memory_limit 256M"
+
+電子郵件無法寄出：
+- 確認 SMTP 設定：主機 mail.acmetech.example.com、連接埠 587、STARTTLS
+- 檢查垃圾郵件資料夾
+- 確認網域 SPF 記錄包含：v=spf1 include:acmetech.example.com ~all
+
+SSL 憑證無法正常運作：
+- 在控制台檢查憑證狀態：控制台 → SSL
+- 若已過期，點選「續約」。免費 Let's Encrypt 憑證會自動續約
+- 續約後請清除瀏覽器快取
+
+無法透過 FTP 連線：
+- 請改用 SFTP（連接埠 22）而非一般 FTP
+- 在控制台確認帳號密碼：控制台 → FTP 帳號
+
+仍需協助？請聯繫我們：
+  線上客服：週一至週五 UTC 上午 9 點至下午 6 點
+  電子郵件：support@acmetech.example.com
+  回覆時間：商業版 / 企業版 4 小時內；入門版 24 小時內

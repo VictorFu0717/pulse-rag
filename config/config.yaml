@@ -65,15 +65,13 @@ knowledge_bases:
       Search the English knowledge base for customer questions about
       products, pricing, billing, account management, and technical support.
 
-  # ── Add more knowledge bases for other languages / domains ────────────────
-  #
-  # - name: "traditional_chinese"
-  #   data_dir: "data/my_faq/zh-TW"
-  #   index_path: "faiss_index_zh_tw"
-  #   url_prefix: "https://help.acmetech.example.com/zh-TW"
-  #   tool_name: "retrieve_zh_tw"
-  #   tool_description: >
-  #     Search the Traditional Chinese knowledge base for customer questions.
+  - name: "traditional_chinese"
+    data_dir: "data/example_faq/zh-TW"
+    index_path: "faiss_index_zh_tw"
+    url_prefix: "https://help.acmetech.example.com/zh-TW"   # ← change or remove
+    tool_name: "retrieve_zh_tw"
+    tool_description: >
+      搜尋繁體中文知識庫，回答客戶關於產品、定價、帳單、帳戶管理與技術支援的問題。
 
 # ── Plugins ───────────────────────────────────────────────────────────────────
 # All files in plugins/ are loaded automatically.

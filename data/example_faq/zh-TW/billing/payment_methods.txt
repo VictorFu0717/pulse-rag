@@ -1,0 +1,18 @@
+支援的付款方式
+
+信用卡 / 金融卡：
+- Visa、Mastercard、American Express
+- 將於每個帳單日自動扣款
+
+PayPal：
+- 在「帳單」→「付款方式」中綁定您的 PayPal 帳戶
+
+銀行匯款：
+- 適用於年費超過 500 美元的方案
+- 請聯繫 billing@acmetech.example.com 取得匯款資訊
+
+加密貨幣：
+- 接受比特幣（BTC）及以太坊（ETH）
+- 需一次性預付 12 個月費用
+
+所有交易均經過安全加密處理。AcmeTech 不儲存完整的卡號資訊。

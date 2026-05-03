@@ -1,0 +1,25 @@
+AcmeTech 新手入門指南
+
+步驟一 — 建立帳戶
+  前往 acmetech.example.com/signup，輸入電子郵件並設定密碼。
+
+步驟二 — 選擇方案
+  選擇入門版、商業版或企業版。您可以隨時升級方案。
+
+步驟三 — 設定網域
+  在控制台前往「網域」→「新增網域」，將 DNS 指向我們的名稱伺服器：
+    ns1.acmetech.example.com
+    ns2.acmetech.example.com
+  DNS 生效最長需要 48 小時。
+
+步驟四 — 部署您的網站
+  使用一鍵安裝程式安裝 WordPress、Joomla 等 CMS 平台，
+  或透過 FTP / SFTP 上傳檔案。
+
+步驟五 — 設定電子郵件
+  前往「電子郵件」→「建立信箱」，輸入信箱名稱與密碼。
+  使用以下設定配置您的郵件客戶端：
+    IMAP：mail.acmetech.example.com:993（SSL）
+    SMTP：mail.acmetech.example.com:587（STARTTLS）
+
+影音教學請前往：help.acmetech.example.com/getting-started
