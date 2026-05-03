@@ -12,7 +12,7 @@ from pathlib import Path
 import plugins as _plugins_pkg
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from pydantic import BaseModel
 
 from core.config import Settings
@@ -131,6 +131,13 @@ def create_app(settings: Settings) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.get("/", response_class=HTMLResponse)
+    async def chat_ui():
+        ui_path = Path(__file__).parent.parent / "static" / "index.html"
+        if not ui_path.exists():
+            return HTMLResponse("<h1>Chat UI not found</h1>", status_code=404)
+        return HTMLResponse(ui_path.read_text(encoding="utf-8"))
 
     @app.get("/health")
     async def health():
