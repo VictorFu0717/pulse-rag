@@ -27,6 +27,7 @@ template_usage.json
 .idea/
 .vscode/
 *.iml
+.claude/
 
 # OS
 .DS_Store
